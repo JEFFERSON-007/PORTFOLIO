@@ -50,11 +50,6 @@ jobs:
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        with:
-          # Automatically inject basePath in your Next.js config file and allow
-          # static export images in next.config.js
-          # (We already did this manually, but this ensures it's correct)
-          static_site_generator: next
       - name: Restore cache
         uses: actions/cache@v4
         with:
