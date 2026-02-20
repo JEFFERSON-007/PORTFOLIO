@@ -100,13 +100,11 @@ export default function Navbar() {
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 2 }}
-                className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled || isMobileMenuOpen ? "py-4 bg-black/40 backdrop-blur-xl border-b border-white/5" : "py-8 bg-transparent"
+                className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled || isMobileMenuOpen ? "py-4 bg-transparent backdrop-blur-sm" : "py-8 bg-transparent"
                     }`}
             >
                 <div className="max-w-7xl mx-auto px-6 md:px-10 flex justify-between items-center">
-                    <button onClick={() => scrollToSection("home")} className="text-xl font-bold tracking-tighter text-white">
-                        PORTFOLIO
-                    </button>
+                    <div className="w-10 h-10" /> {/* Empty top-left corner */}
 
                     <div className="hidden md:flex gap-8 items-center">
                         {navItems.map((item) => (
