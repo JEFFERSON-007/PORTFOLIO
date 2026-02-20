@@ -48,16 +48,16 @@ export default function SkillCard({ title, icon, tags, image }: SkillCardProps) 
                 rotateY,
                 transformStyle: "preserve-3d",
             }}
-            className="relative h-96 w-full glass neon-border-blue p-8 flex flex-col items-center justify-center gap-6 group overflow-hidden"
+            className="relative h-96 w-full glass neon-border-blue p-8 flex flex-col items-center justify-center gap-6 group overflow-hidden backdrop-blur-xl"
         >
             {/* Background Image */}
             {image && (
                 <>
                     <div
-                        className="absolute inset-0 z-0 bg-cover bg-center opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700"
+                        className="absolute inset-0 z-0 bg-cover bg-center opacity-30 group-hover:opacity-50 group-hover:scale-110 transition-all duration-700"
                         style={{ backgroundImage: `url(${image})` }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/40 to-background/90 z-[1]"></div>
+                    <div className="absolute inset-0 bg-black/60 z-[1]"></div>
                 </>
             )}
 

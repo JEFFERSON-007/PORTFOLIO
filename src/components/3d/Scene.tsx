@@ -28,13 +28,13 @@ export default function Scene() {
 
             <EffectComposer disableNormalPass>
                 <Bloom
-                    luminanceThreshold={0.5}
+                    luminanceThreshold={0.2}
                     mipmapBlur
-                    intensity={1.5}
-                    radius={0.4}
+                    intensity={2}
+                    radius={0.5}
                 />
-                <Noise opacity={0.05} />
-                <Vignette eskil={false} offset={0.1} darkness={1.1} />
+                <Noise opacity={0.08} />
+                <Vignette eskil={false} offset={0.1} darkness={1.2} />
             </EffectComposer>
 
             <Preload all />

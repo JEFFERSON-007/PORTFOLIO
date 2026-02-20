@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Modern 3D Portfolio | Senior Creative Developer",
+    title: "Portfolio",
     description: "A premium 3D immersive portfolio built with Next.js, Three.js, and GSAP.",
 };
 

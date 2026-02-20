@@ -86,17 +86,12 @@ export default function Navbar() {
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 2 }}
-            className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled ? "py-4 bg-black/50 backdrop-blur-md border-b border-white/5" : "py-8 bg-transparent"
+            className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled ? "py-4 bg-transparent" : "py-8 bg-transparent"
                 }`}
         >
             <div className="max-w-7xl mx-auto px-10 flex justify-between items-center">
-                <motion.div
-                    className="text-xl font-black tracking-tighter text-neon-blue cursor-pointer"
-                    whileHover={{ scale: 1.05 }}
-                    onClick={() => scrollToSection("home")}
-                >
-                    JR.A
-                </motion.div>
+                <div className="w-10 h-10 md:hidden" /> {/* Spacer for flex centering if needed, but removing JR.A */}
+                <div className="hidden md:block" />
 
                 <div className="hidden md:flex gap-8 items-center">
                     {navItems.map((item) => (

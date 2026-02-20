@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
-import { Code2, Cpu, Globe, Mail, MapPin, Send, Phone } from "lucide-react";
+import { Code2, Cpu, Download, Globe, Mail, MapPin, Send, Phone } from "lucide-react";
 
 // Components
 const Scene = dynamic(() => import("@/components/3d/Scene"), { ssr: false });
@@ -94,11 +94,12 @@ export default function Home() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.5, delay: 1.5 }}
+                        className="relative z-20"
                     >
                         <h1 className="text-[12vw] font-black leading-none tracking-tighter uppercase neon-text-blue mb-4">
                             JEFFERSON<br />RAJA A
                         </h1>
-                        <p className="text-xl md:text-2xl font-light tracking-[0.5em] uppercase text-neon-blue/60 mb-12">
+                        <p className="text-xl md:text-2xl font-light tracking-[0.5em] uppercase text-neon-blue mb-12 text-shadow-glow">
                             B.Tech Computer Engineering (Cybersecurity)
                         </p>
 
@@ -128,14 +129,14 @@ export default function Home() {
                         {/* ABOUT PANEL */}
                         <section id="about" className="panel section">
                             <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-                                <div className="panel-content">
+                                <div className="panel-content z-20 bg-black/40 backdrop-blur-2xl p-10 md:p-16 rounded-[40px] border border-white/10 shadow-2xl">
                                     <h2 className="text-7xl font-bold mb-8 text-neon-blue">About</h2>
-                                    <p className="text-2xl font-light leading-relaxed mb-8 opacity-80">
-                                        I am a <span className="text-neon-pink">Cybersecurity Specialist</span> and Software Developer dedicated to
+                                    <p className="text-2xl font-light leading-relaxed mb-8 text-white">
+                                        I am a <span className="text-neon-pink text-shadow-glow">Cybersecurity Specialist</span> and Software Developer dedicated to
                                         transforming complex security challenges into resilient, user-centric solutions.
                                     </p>
-                                    <p className="text-lg opacity-60 font-light">
-                                        Deeply interested in emerging tech fields and eager to learn, I combine defensive
+                                    <p className="text-lg text-white/70 font-light">
+                                        Deeply interested in emerging tech fields and want to learn new things, I combine defensive
                                         engineering with innovative application design to secure the digital frontier.
                                     </p>
                                 </div>
@@ -266,9 +267,17 @@ export default function Home() {
                                             <MapPin className="text-neon-pink" />
                                             <span>Coimbatore</span>
                                         </div>
-                                        <div className="flex gap-6 mt-8">
+                                        <div className="flex flex-wrap gap-6 mt-8">
                                             <a href="https://github.com/JEFFERSON-007" target="_blank" className="hover:text-neon-blue transition-colors">GitHub</a>
                                             <a href="https://www.linkedin.com/in/jefferson-raja-a-170740323/" target="_blank" className="hover:text-neon-blue transition-colors">LinkedIn</a>
+                                            <a
+                                                href="/resume.pdf"
+                                                download
+                                                className="flex items-center gap-2 px-4 py-2 bg-neon-pink/10 hover:bg-neon-pink/20 border border-neon-pink/30 rounded-full transition-all group"
+                                            >
+                                                <Download size={14} className="text-neon-pink group-hover:scale-110 transition-transform" />
+                                                <span className="text-[10px] uppercase tracking-widest font-bold">Resume</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -306,7 +315,7 @@ export default function Home() {
                 </div>
 
                 {/* FOOTER */}
-                <footer className="relative z-50 p-10 border-t border-white/10 bg-background text-center text-[11px] uppercase tracking-[0.5em] text-white/70">
+                <footer className="relative z-50 p-10 bg-transparent text-center text-[11px] uppercase tracking-[0.5em] text-white/70">
                     <div className="max-w-7xl mx-auto">
                         &copy; 2026 JEFFERSON RAJA A • All Rights Reserved
                     </div>
