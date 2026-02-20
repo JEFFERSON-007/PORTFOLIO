@@ -1,6 +1,14 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 import { Menu, X } from "lucide-react";
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollToPlugin);
+}
 
 const navItems = [
     { name: "Home", id: "home" },
