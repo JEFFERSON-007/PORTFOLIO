@@ -70,6 +70,18 @@ export default function Home() {
             });
         });
 
+        // Fade out Scroll Indicator on scroll
+        gsap.to(".scroll-indicator", {
+            opacity: 0,
+            y: 20,
+            scrollTrigger: {
+                trigger: "#home",
+                start: "top top",
+                end: "bottom center",
+                scrub: true,
+            }
+        });
+
         mm.add("(max-width: 767px)", () => {
             // MOBILE: Simple Vertical Fade-ins
             sections.forEach((section: any) => {
@@ -114,7 +126,7 @@ export default function Home() {
 
             <div className="relative z-10">
                 {/* HERO SECTION */}
-                <section id="home" className="h-screen w-full flex flex-col items-center justify-center p-6 text-center">
+                <section id="home" className="relative h-screen w-full flex flex-col items-center justify-center p-6 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -141,7 +153,7 @@ export default function Home() {
                         </div>
                     </motion.div>
 
-                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                    <div className="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
                         <div className="w-[2px] h-16 bg-gradient-to-b from-neon-blue to-transparent animate-pulse"></div>
                         <span className="text-[10px] uppercase tracking-[0.5em] mt-4 opacity-40">Slide Down</span>
                     </div>
