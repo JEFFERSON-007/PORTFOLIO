@@ -1,0 +1,100 @@
+"use client";
+
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ReactNode } from "react";
+
+interface SkillCardProps {
+    title: string;
+    icon: ReactNode;
+    tags: string[];
+    image?: string;
+}
+
+export default function SkillCard({ title, icon, tags, image }: SkillCardProps) {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const mouseXSpring = useSpring(x);
+    const mouseYSpring = useSpring(y);
+
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["17.5deg", "-17.5deg"]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-17.5deg", "17.5deg"]);
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+
+        x.set(xPct);
+        y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    return (
+        <motion.div
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{
+                rotateX,
+                rotateY,
+                transformStyle: "preserve-3d",
+            }}
+            className="relative h-96 w-full glass neon-border-blue p-8 flex flex-col items-center justify-center gap-6 group overflow-hidden"
+        >
+            {/* Background Image */}
+            {image && (
+                <>
+                    <div
+                        className="absolute inset-0 z-0 bg-cover bg-center opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700"
+                        style={{ backgroundImage: `url(${image})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/40 to-background/90 z-[1]"></div>
+                </>
+            )}
+
+            <div
+                style={{
+                    transform: "translateZ(75px)",
+                    transformStyle: "preserve-3d",
+                }}
+                className="relative z-10 text-6xl text-neon-blue group-hover:text-neon-pink transition-colors duration-500"
+            >
+                {icon}
+            </div>
+
+            <div
+                style={{
+                    transform: "translateZ(50px)",
+                }}
+                className="relative z-10 text-center"
+            >
+                <h3 className="text-2xl font-bold mb-2 uppercase tracking-widest">{title}</h3>
+                <div className="flex flex-wrap justify-center gap-3 mt-4">
+                    {tags.map((tag) => (
+                        <span key={tag} className="flex items-center gap-2 text-[10px] uppercase tracking-wider bg-white/5 hover:bg-white/10 border border-white/5 py-1 px-3 rounded-full transition-colors group/tag">
+                            <img
+                                src={`https://cdn.simpleicons.org/${tag.toLowerCase().replace('.', 'dot').replace(' ', '')}`}
+                                alt={tag}
+                                className="w-3 h-3 brightness-0 invert opacity-60 group-hover/tag:opacity-100 transition-opacity"
+                                onError={(e) => (e.currentTarget.style.display = 'none')}
+                            />
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+            </div>
+
+            {/* Decorative Glow */}
+            <div className="absolute inset-0 bg-neon-blue/5 opacity-0 group-hover:opacity-100 transition-opacity blur-2xl -z-10"></div>
+        </motion.div>
+    );
+}
