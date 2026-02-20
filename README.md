@@ -89,4 +89,3 @@ npm run start
 - LinkedIn: [Jefferson Raja A](https://www.linkedin.com/in/jefferson-raja-a-170740323/)
 
 ---
-*Built with ❤️ and a lot of ☕ by Antigravity AI.*
