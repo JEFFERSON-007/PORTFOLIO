@@ -144,7 +144,7 @@ export default function Home() {
                                     <div className="absolute inset-0 bg-neon-blue/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     <div className="bg-white/5 rounded-[22px] flex items-center justify-center border border-white/10 relative">
                                         <img
-                                            src="/profile.jpg"
+                                            src="/PORTFOLIO/profile.jpg"
                                             alt="Jefferson Raja"
                                             className="w-full h-auto object-contain rounded-[21px] z-10 opacity-90 group-hover:opacity-100 transition-opacity duration-700 p-2"
                                             onError={(e) => e.currentTarget.style.display = 'none'}
@@ -170,25 +170,25 @@ export default function Home() {
                                         title="Cybersecurity"
                                         icon={<Cpu />}
                                         tags={["Wireshark", "TryHackMe", "PicoCTF", "Batchfile", "KaliLinux"]}
-                                        image="/skill-sec.png"
+                                        image="/PORTFOLIO/skill-sec.png"
                                     />
                                     <SkillCard
                                         title="Web Dev"
                                         icon={<Globe />}
                                         tags={["React", "Next.js", "JavaScript", "HTML5", "Dart"]}
-                                        image="/skill-web.png"
+                                        image="/PORTFOLIO/skill-web.png"
                                     />
                                     <SkillCard
                                         title="Engineering"
                                         icon={<Code2 />}
                                         tags={["Cplusplus", "C", "Java", "Python", "Android"]}
-                                        image="/skill-eng.png"
+                                        image="/PORTFOLIO/skill-eng.png"
                                     />
                                     <SkillCard
                                         title="Data & Core"
                                         icon={<Cpu />}
                                         tags={["PostgreSQL", "MySQL", "JSON", "Git", "TensorFlow"]}
-                                        image="/skill-data.png"
+                                        image="/PORTFOLIO/skill-data.png"
                                     />
                                 </div>
                             </div>
@@ -203,21 +203,21 @@ export default function Home() {
                                         title="Dataset Visualizer"
                                         description="Advanced tool for data visualization and preprocessing with interactive 3D graphs."
                                         tags={["Python", "ML", "Tooling"]}
-                                        image="/project-1.png"
+                                        image="/PORTFOLIO/project-1.png"
                                         githubUrl="https://github.com/JEFFERSON-007/dataset-visualition-and-preprocessing-tool"
                                     />
                                     <ProjectCard
                                         title="Phishing Shield"
                                         description="Professional browser extension with multi-layered detection for secure browsing."
                                         tags={["Security", "Extension", "JS"]}
-                                        image="/project-2.png"
+                                        image="/PORTFOLIO/project-2.png"
                                         githubUrl="https://github.com/JEFFERSON-007/phishing-extension"
                                     />
                                     <ProjectCard
                                         title="Pentest Toolkit"
                                         description="Comprehensive penetration testing suite for infrastructure vulnerability assessment."
                                         tags={["Cybersec", "Python", "NetSec"]}
-                                        image="/project-3.png"
+                                        image="/PORTFOLIO/project-3.png"
                                         githubUrl="https://github.com/JEFFERSON-007/PENETRATION-TESTING-TOOLKIT"
                                     />
                                 </div>
@@ -271,7 +271,7 @@ export default function Home() {
                                             <a href="https://github.com/JEFFERSON-007" target="_blank" className="hover:text-neon-blue transition-colors">GitHub</a>
                                             <a href="https://www.linkedin.com/in/jefferson-raja-a-170740323/" target="_blank" className="hover:text-neon-blue transition-colors">LinkedIn</a>
                                             <a
-                                                href="/resume.pdf"
+                                                href="/PORTFOLIO/resume.pdf"
                                                 download
                                                 className="flex items-center gap-2 px-4 py-2 bg-neon-pink/10 hover:bg-neon-pink/20 border border-neon-pink/30 rounded-full transition-all group"
                                             >
