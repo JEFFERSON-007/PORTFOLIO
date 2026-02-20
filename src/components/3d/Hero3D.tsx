@@ -62,7 +62,7 @@ export default function Hero3D() {
     return (
         <>
             <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-                <Sphere ref={sphereRef} args={[1, 128, 128]} scale={1.8}>
+                <Sphere ref={sphereRef} args={[1, 128, 128]} scale={typeof window !== 'undefined' && window.innerWidth < 768 ? 1.2 : 1.8}>
                     <MeshDistortMaterial
                         color="#00f3ff"
                         attach="material"

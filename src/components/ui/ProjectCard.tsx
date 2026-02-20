@@ -15,7 +15,7 @@ interface ProjectCardProps {
 export default function ProjectCard({ title, description, tags, image, githubUrl, liveUrl }: ProjectCardProps) {
     return (
         <motion.div
-            className="group relative h-[450px] w-full glass overflow-hidden rounded-2xl border border-white/5 hover:border-neon-blue/30 transition-all duration-500"
+            className="group relative h-[400px] md:h-[450px] w-full glass overflow-hidden rounded-2xl border border-white/5 hover:border-neon-blue/30 transition-all duration-500"
             whileHover={{ y: -10 }}
         >
             {/* Background Image */}

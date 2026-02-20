@@ -6,8 +6,13 @@ import { motion } from "framer-motion";
 export default function CustomCursor() {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isHovering, setIsHovering] = useState(false);
+    const [isTouch, setIsTouch] = useState(false);
 
     useEffect(() => {
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+            setIsTouch(true);
+            return;
+        }
         const handleMouseMove = (e: MouseEvent) => {
             setMousePos({ x: e.clientX, y: e.clientY });
         };
@@ -34,6 +39,8 @@ export default function CustomCursor() {
             window.removeEventListener("mouseover", handleMouseOver);
         };
     }, []);
+
+    if (isTouch) return null;
 
     return (
         <motion.div

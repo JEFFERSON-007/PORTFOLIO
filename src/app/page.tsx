@@ -24,56 +24,81 @@ export default function Home() {
     useEffect(() => {
         if (!horizontalRef.current) return;
 
+        const mm = gsap.matchMedia();
         const sections = gsap.utils.toArray(".panel");
 
-        const scrollTween = gsap.to(sections, {
-            xPercent: -100 * (sections.length - 1),
-            ease: "none",
-            scrollTrigger: {
-                trigger: horizontalRef.current,
-                pin: true,
-                scrub: 1.5,
-                snap: 1 / (sections.length - 1),
-                end: () => "+=400%", // 400% of viewport width (for 5 panels total)
-            }
+        mm.add("(min-width: 768px)", () => {
+            // DESKTOP: Horizontal Scroll logic
+            const scrollTween = gsap.to(sections, {
+                xPercent: -100 * (sections.length - 1),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: horizontalRef.current,
+                    pin: true,
+                    scrub: 1.5,
+                    snap: 1 / (sections.length - 1),
+                    end: () => "+=400%",
+                }
+            });
+
+            // Panel Parallax Effects (Horizontal)
+            sections.forEach((section: any) => {
+                const title = section.querySelector("h2");
+                const content = section.querySelector(".panel-content");
+                if (title) {
+                    gsap.from(title, {
+                        x: 100, opacity: 0,
+                        scrollTrigger: {
+                            containerAnimation: scrollTween,
+                            trigger: section,
+                            start: "left center",
+                            toggleActions: "play none none reverse",
+                        }
+                    });
+                }
+                if (content) {
+                    gsap.from(content, {
+                        y: 50, opacity: 0, delay: 0.2,
+                        scrollTrigger: {
+                            containerAnimation: scrollTween,
+                            trigger: section,
+                            start: "left center",
+                            toggleActions: "play none none reverse",
+                        }
+                    });
+                }
+            });
         });
 
-        // Panel Parallax Effects
-        sections.forEach((section: any) => {
-            const title = section.querySelector("h2");
-            const content = section.querySelector(".panel-content");
-
-            if (title) {
-                gsap.from(title, {
-                    x: 100,
-                    opacity: 0,
-                    scrollTrigger: {
-                        containerAnimation: scrollTween,
-                        trigger: section,
-                        start: "left center",
-                        toggleActions: "play none none reverse",
-                    }
-                });
-            }
-
-            if (content) {
-                gsap.from(content, {
-                    y: 50,
-                    opacity: 0,
-                    delay: 0.2,
-                    scrollTrigger: {
-                        containerAnimation: scrollTween,
-                        trigger: section,
-                        start: "left center",
-                        toggleActions: "play none none reverse",
-                    }
-                });
-            }
+        mm.add("(max-width: 767px)", () => {
+            // MOBILE: Simple Vertical Fade-ins
+            sections.forEach((section: any) => {
+                const title = section.querySelector("h2");
+                const content = section.querySelector(".panel-content");
+                if (title) {
+                    gsap.from(title, {
+                        y: 30, opacity: 0,
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 80%",
+                            toggleActions: "play none none reverse",
+                        }
+                    });
+                }
+                if (content) {
+                    gsap.from(content, {
+                        y: 30, opacity: 0, delay: 0.1,
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 80%",
+                            toggleActions: "play none none reverse",
+                        }
+                    });
+                }
+            });
         });
 
-        return () => {
-            ScrollTrigger.getAll().forEach(t => t.kill());
-        };
+        return () => mm.revert();
     }, []);
 
     return (
@@ -96,10 +121,10 @@ export default function Home() {
                         transition={{ duration: 1.5, delay: 1.5 }}
                         className="relative z-20"
                     >
-                        <h1 className="text-[12vw] font-black leading-none tracking-tighter uppercase neon-text-blue mb-4">
+                        <h1 className="text-[15vw] md:text-[12vw] font-black leading-none tracking-tighter uppercase neon-text-blue mb-4">
                             JEFFERSON<br />RAJA A
                         </h1>
-                        <p className="text-xl md:text-2xl font-light tracking-[0.5em] uppercase text-neon-blue mb-12 text-shadow-glow">
+                        <p className="text-sm md:text-2xl font-light tracking-[0.3em] md:tracking-[0.5em] uppercase text-neon-blue mb-8 md:mb-12 text-shadow-glow">
                             B.Tech Computer Engineering (Cybersecurity)
                         </p>
 
@@ -124,18 +149,17 @@ export default function Home() {
 
                 {/* HORIZONTAL WRAPPER */}
                 <div id="horizontal-wrapper" ref={horizontalRef} className="overflow-hidden">
-                    <div className="flex w-[500vw]">
+                    <div className="flex flex-col md:flex-row md:w-[500vw]">
 
-                        {/* ABOUT PANEL */}
-                        <section id="about" className="panel section">
-                            <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-                                <div className="panel-content z-20 bg-black/40 backdrop-blur-2xl p-10 md:p-16 rounded-[40px] border border-white/10 shadow-2xl">
-                                    <h2 className="text-7xl font-bold mb-8 text-neon-blue">About</h2>
-                                    <p className="text-2xl font-light leading-relaxed mb-8 text-white">
+                        <section id="about" className="panel section py-20 md:py-0">
+                            <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center px-6 md:px-0">
+                                <div className="panel-content z-20 bg-black/40 backdrop-blur-2xl p-8 md:p-16 rounded-[40px] border border-white/10 shadow-2xl">
+                                    <h2 className="text-5xl md:text-7xl font-bold mb-8 text-neon-blue">About</h2>
+                                    <p className="text-xl md:text-2xl font-light leading-relaxed mb-8 text-white">
                                         I am a <span className="text-neon-pink text-shadow-glow">Cybersecurity Specialist</span> and Software Developer dedicated to
                                         transforming complex security challenges into resilient, user-centric solutions.
                                     </p>
-                                    <p className="text-lg text-white/70 font-light">
+                                    <p className="text-base md:text-lg text-white/70 font-light">
                                         Deeply interested in emerging tech fields and want to learn new things, I combine defensive
                                         engineering with innovative application design to secure the digital frontier.
                                     </p>

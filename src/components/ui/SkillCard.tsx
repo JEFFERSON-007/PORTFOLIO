@@ -48,7 +48,7 @@ export default function SkillCard({ title, icon, tags, image }: SkillCardProps) 
                 rotateY,
                 transformStyle: "preserve-3d",
             }}
-            className="relative h-96 w-full glass neon-border-blue p-8 flex flex-col items-center justify-center gap-6 group overflow-hidden backdrop-blur-xl"
+            className="relative h-80 md:h-96 w-full glass neon-border-blue p-8 flex flex-col items-center justify-center gap-6 group overflow-hidden backdrop-blur-xl"
         >
             {/* Background Image */}
             {image && (

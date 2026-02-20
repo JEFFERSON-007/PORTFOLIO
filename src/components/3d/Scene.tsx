@@ -10,7 +10,10 @@ export default function Scene() {
     return (
         <Canvas
             shadows
-            camera={{ position: [0, 0, 5], fov: 35 }}
+            camera={{
+                position: [0, 0, typeof window !== 'undefined' && window.innerWidth < 768 ? 8 : 5],
+                fov: typeof window !== 'undefined' && window.innerWidth < 768 ? 45 : 35
+            }}
             gl={{ antialias: false, stencil: false, depth: true }}
             dpr={[1, 2]}
         >
