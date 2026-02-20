@@ -32,7 +32,7 @@ export default function Home() {
             scrollTrigger: {
                 trigger: horizontalRef.current,
                 pin: true,
-                scrub: 1,
+                scrub: 1.5,
                 snap: 1 / (sections.length - 1),
                 end: () => "+=400%", // 400% of viewport width (for 5 panels total)
             }

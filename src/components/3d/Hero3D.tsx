@@ -23,36 +23,39 @@ export default function Hero3D() {
 
     const smoothedScroll = useRef(0);
 
-    useFrame((state) => {
+    useFrame((state, delta) => {
         const time = state.clock.getElapsedTime();
         const targetScroll = typeof window !== "undefined" ? window.scrollY : 0;
 
-        // Lerp scroll value for butter-smooth movement
-        smoothedScroll.current = THREE.MathUtils.lerp(smoothedScroll.current, targetScroll, 0.05);
+        // Butter-smooth damping: Consistent speed regardless of monitor FPS (60Hz vs 144Hz)
+        smoothedScroll.current = THREE.MathUtils.damp(smoothedScroll.current, targetScroll, 4, delta);
 
-        const scrollRotation = (smoothedScroll.current / (window.innerHeight * 4)) * Math.PI * 2;
-        const scrollPosition = (smoothedScroll.current / window.innerHeight) * 2;
+        const vh = typeof window !== "undefined" ? window.innerHeight : 1000;
+        const scrollRotation = (smoothedScroll.current / (vh * 4)) * Math.PI * 2;
+        const scrollPosition = (smoothedScroll.current / vh) * 2;
 
         if (sphereRef.current) {
-            // Intense spin + smooth scroll rotation
-            sphereRef.current.rotation.x = time * 0.15 + scrollRotation;
-            sphereRef.current.rotation.y = time * 0.2 + scrollRotation * 1.5;
+            // Smooth rotations
+            sphereRef.current.rotation.x = THREE.MathUtils.damp(sphereRef.current.rotation.x, time * 0.15 + scrollRotation, 2, delta);
+            sphereRef.current.rotation.y = THREE.MathUtils.damp(sphereRef.current.rotation.y, time * 0.2 + scrollRotation * 1.5, 2, delta);
 
-            // Pulsing position + Scroll movement
-            sphereRef.current.position.y = Math.sin(time * 0.8) * 0.3 - (scrollPosition * 0.5);
-            sphereRef.current.position.z = Math.cos(time * 0.5) * 0.5;
+            // Smooth positioning
+            const targetY = Math.sin(time * 0.8) * 0.3 - (scrollPosition * 0.5);
+            const targetZ = Math.cos(time * 0.5) * 0.5;
+            sphereRef.current.position.y = THREE.MathUtils.damp(sphereRef.current.position.y, targetY, 2, delta);
+            sphereRef.current.position.z = THREE.MathUtils.damp(sphereRef.current.position.z, targetZ, 2, delta);
         }
 
         if (particlesRef.current) {
-            particlesRef.current.rotation.z = time * 0.02 + scrollRotation * 0.1;
-            particlesRef.current.position.y = - (scrollPosition * 0.2);
+            particlesRef.current.rotation.z = THREE.MathUtils.damp(particlesRef.current.rotation.z, time * 0.02 + scrollRotation * 0.1, 1, delta);
+            particlesRef.current.position.y = THREE.MathUtils.damp(particlesRef.current.position.y, -(scrollPosition * 0.2), 1, delta);
         }
 
-        // Camera dynamics: Mouse + Scroll Depth + Pulse
+        // Camera Dynamics: Smooth Mouse + Scroll Depth
         const targetCamZ = 5 - (scrollPosition * 0.5) + Math.sin(time * 0.5) * 0.5;
-        state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, targetCamZ, 0.05);
-        state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, state.mouse.x * 3, 0.05);
-        state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, (state.mouse.y * 3) - (scrollPosition * 0.2), 0.05);
+        state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, targetCamZ, 2, delta);
+        state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, state.mouse.x * 2.5, 2, delta);
+        state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, (state.mouse.y * 2.5) - (scrollPosition * 0.2), 2, delta);
         state.camera.lookAt(0, 0, 0);
     });
 
