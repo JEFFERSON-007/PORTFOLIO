@@ -1,8 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',
-  basePath: '/PORTFOLIO',
-  assetPrefix: '/PORTFOLIO/',
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  output: "export",
+  basePath: "/PORTFOLIO",
+  assetPrefix: "/PORTFOLIO/",
   images: {
     unoptimized: true,
   },
@@ -13,7 +14,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: true,
-  transpilePackages: ['three'],
+  transpilePackages: ["three"],
 };
 
 export default nextConfig;

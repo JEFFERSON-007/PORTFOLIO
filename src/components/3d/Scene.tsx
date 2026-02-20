@@ -26,7 +26,7 @@ export default function Scene() {
                 <Environment preset="city" />
             </Suspense>
 
-            <EffectComposer disableNormalPass>
+            <EffectComposer enableNormalPass={false}>
                 <Bloom
                     luminanceThreshold={0.2}
                     mipmapBlur
