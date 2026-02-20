@@ -150,7 +150,7 @@ export default function Home() {
                                             onError={(e) => e.currentTarget.style.display = 'none'}
                                         />
                                         <div className="absolute inset-0 flex items-center justify-center text-white/10 text-[10px] tracking-widest uppercase text-center p-8 z-0">
-                                            Add "profile.jpg" to the public folder
+                                            Add &quot;profile.jpg&quot; to the public folder
                                         </div>
                                         <Cpu size={120} className="absolute text-neon-blue opacity-5 z-0 group-hover:scale-110 transition-transform duration-700" />
                                     </div>
