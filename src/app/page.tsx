@@ -151,7 +151,6 @@ export default function Home() {
                             />
                         </div>
 
-                        <div className="flex gap-6 md:gap-8 justify-center">
                             <div className="flex flex-col items-center">
                                 <span className="text-3xl md:text-4xl font-bold text-white">15+</span>
                                 <span className="text-[8px] md:text-[10px] uppercase tracking-widest opacity-40">Projects</span>
@@ -161,7 +160,6 @@ export default function Home() {
                                 <span className="text-3xl md:text-4xl font-bold text-white">2025</span>
                                 <span className="text-[8px] md:text-[10px] uppercase tracking-widest opacity-40">SIH Winner</span>
                             </div>
-                        </div>
                     </motion.div>
 
                     <div className="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
@@ -182,10 +180,11 @@ export default function Home() {
                                         I am a <span className="text-neon-pink text-shadow-glow">Cybersecurity Specialist</span> and Software Developer dedicated to
                                         transforming complex security challenges into resilient, user-centric solutions.
                                     </p>
-                                    <p className="text-base md:text-lg text-white/70 font-light">
+                                    <p className="text-base md:text-lg text-white/70 font-light leading-relaxed">
                                         Deeply interested in emerging tech fields and want to learn new things, I combine defensive
                                         engineering with innovative application design to secure the digital frontier.
                                     </p>
+                                    <p className="mt-6 text-xl font-bold text-neon-blue">Jefferson Raja</p>
                                 </div>
                                 <div className="relative glass rounded-3xl p-1 overflow-hidden group w-full max-w-[300px] md:max-w-md mx-auto order-1 md:order-2 aspect-[3/4] md:aspect-auto">
                                     <div className="absolute inset-0 bg-neon-blue/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
