@@ -382,11 +382,22 @@ export default function Home() {
                 </footer>
             </div>
             
-            {/* FORCE SYNC CSS */}
-            <style jsx global>{`
-                .panel { width: 100vw !important; flex-shrink: 0 !important; }
-                section { height: 100vh !important; }
-            `}</style>
+            {/* FORCE SYNC CSS - App Router compatible injection */}
+            <style dangerouslySetInnerHTML={{ __html: `
+                .panel { 
+                    width: 100vw !important; 
+                    flex-shrink: 0 !important; 
+                    height: 100vh !important;
+                }
+                section { 
+                    height: 100vh !important; 
+                    width: 100vw !important;
+                }
+                .horizontal-container {
+                    display: flex !important;
+                    flex-direction: row !important;
+                }
+            ` }} />
         </main>
     );
 }
