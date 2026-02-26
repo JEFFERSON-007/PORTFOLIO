@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: true,
-  transpilePackages: ["three"],
+  transpilePackages: ["three", "gsap", "framer-motion"],
 };
 
 export default nextConfig;

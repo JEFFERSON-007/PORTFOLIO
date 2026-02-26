@@ -25,6 +25,7 @@ export default function Home() {
     const horizontalRef = useRef<HTMLDivElement>(null);
     const panelsRef = useRef<HTMLDivElement[]>([]);
     const [isMobile, setIsMobile] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
@@ -106,10 +107,13 @@ export default function Home() {
             }
         });
 
+        setMounted(true);
         return () => {
             ScrollTrigger.getAll().forEach(t => t.kill());
         };
     }, []);
+
+    if (!mounted) return <div className="min-h-screen bg-[#050505]" />;
 
     return (
         <main className="relative bg-[#050505] text-white selection:bg-neon-blue selection:text-black">
@@ -176,12 +180,12 @@ export default function Home() {
                 <div 
                     id="horizontal-wrapper" 
                     ref={horizontalRef} 
-                    className="horizontal-container-wrapper overflow-hidden"
-                    style={{ overflow: 'hidden', width: '100vw' }}
+                    className="horizontal-container-wrapper"
+                    style={{ position: 'relative', width: '100vw', height: '100vh', minHeight: '100vh', maxHeight: '100vh', overflow: 'hidden' }}
                 >
                     <div 
-                        className="horizontal-container flex flex-row"
-                        style={{ display: 'flex', flexDirection: 'row', width: '500vw', willChange: 'transform' }}
+                        className="horizontal-container"
+                        style={{ display: 'flex', flexDirection: 'row', width: '500vw', height: '100vh', minHeight: '100vh', maxHeight: '100vh', willChange: 'transform' }}
                     >
 
                         <section id="about" className="panel section py-0 w-screen">
