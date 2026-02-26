@@ -114,6 +114,10 @@ export default function Home() {
             <Navbar />
             <LoadingScreen />
             <CustomCursor />
+            <style dangerouslySetInnerHTML={{ __html: `
+                body, html, main { background-color: #050505 !important; color: white !important; }
+                .neon-text-blue { color: #00f3ff !important; text-shadow: 0 0 10px rgba(0,243,255,0.5) !important; }
+            ` }} />
 
             {/* 3D Background */}
             <div className="fixed inset-0 z-0">
@@ -138,9 +142,9 @@ export default function Home() {
                                 options={{
                                     strings: [
                                         "Cybersecurity Specialist",
-                                        "Full Stack Developer",
+                                        "Software Developer",
                                         "SIH 2025 Winner",
-                                        "B.Tech Computer Engineering",
+                                        "Jefferson Raja A",
                                     ],
                                     autoStart: true,
                                     loop: true,
