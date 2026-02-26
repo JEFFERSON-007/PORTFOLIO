@@ -6,9 +6,8 @@ import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 import { Menu, X } from "lucide-react";
 
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollToPlugin);
-}
+
+// Registered in component
 
 const navItems = [
     { name: "Home", id: "home" },
@@ -25,6 +24,7 @@ export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
+        gsap.registerPlugin(ScrollToPlugin);
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
 

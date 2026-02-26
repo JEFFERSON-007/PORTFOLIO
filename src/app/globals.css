@@ -60,9 +60,15 @@ canvas {
 
 /* Horizontal Scroll Container */
 .horizontal-container {
-  overflow: hidden;
-  display: flex;
-  width: 500vw; /* 5 sections */
+  display: flex !important;
+  flex-direction: row !important;
+  width: 500vw !important; /* 5 sections */
+  will-change: transform;
+}
+
+.horizontal-container-wrapper {
+  overflow: hidden !important;
+  width: 100vw !important;
 }
 
 .section {

@@ -18,7 +18,8 @@ const ProjectCard = dynamic(() => import("@/components/ui/ProjectCard"), { ssr: 
 const Navbar = dynamic(() => import("@/components/ui/Navbar"), { ssr: false });
 const ParticleBackground = dynamic(() => import("@/components/ui/ParticleBackground"), { ssr: false });
 
-gsap.registerPlugin(ScrollTrigger);
+
+// Registration handled inside component
 
 export default function Home() {
     const horizontalRef = useRef<HTMLDivElement>(null);
@@ -26,6 +27,7 @@ export default function Home() {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
         if (window.innerWidth < 768) setIsMobile(true);
         if (!horizontalRef.current) return;
 
@@ -114,10 +116,6 @@ export default function Home() {
             <Navbar />
             <LoadingScreen />
             <CustomCursor />
-            <style dangerouslySetInnerHTML={{ __html: `
-                body, html, main { background-color: #050505 !important; color: white !important; }
-                .neon-text-blue { color: #00f3ff !important; text-shadow: 0 0 10px rgba(0,243,255,0.5) !important; }
-            ` }} />
 
             {/* 3D Background */}
             <div className="fixed inset-0 z-0">
@@ -175,8 +173,16 @@ export default function Home() {
                 </section>
 
                 {/* HORIZONTAL WRAPPER */}
-                <div id="horizontal-wrapper" ref={horizontalRef} className="overflow-hidden">
-                    <div className="flex flex-row w-[500vw]">
+                <div 
+                    id="horizontal-wrapper" 
+                    ref={horizontalRef} 
+                    className="horizontal-container-wrapper overflow-hidden"
+                    style={{ overflow: 'hidden', width: '100vw' }}
+                >
+                    <div 
+                        className="horizontal-container flex flex-row"
+                        style={{ display: 'flex', flexDirection: 'row', width: '500vw', willChange: 'transform' }}
+                    >
 
                         <section id="about" className="panel section py-0 w-screen">
                             <div className="max-w-6xl w-full flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-20 items-center px-4 md:px-10 h-full">
@@ -371,10 +377,16 @@ export default function Home() {
                 {/* FOOTER */}
                 <footer className="relative z-50 p-10 bg-transparent text-center text-[11px] uppercase tracking-[0.5em] text-white/70">
                     <div className="max-w-7xl mx-auto">
-                        &copy; 2026 JEFFERSON RAJA A • All Rights Reserved
+                        © 2026 JEFFERSON RAJA A • All Rights Reserved
                     </div>
                 </footer>
             </div>
+            
+            {/* FORCE SYNC CSS */}
+            <style jsx global>{`
+                .panel { width: 100vw !important; flex-shrink: 0 !important; }
+                section { height: 100vh !important; }
+            `}</style>
         </main>
     );
 }
