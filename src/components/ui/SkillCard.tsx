@@ -1,6 +1,8 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import { ReactNode } from "react";
 
 interface SkillCardProps {
@@ -11,6 +13,7 @@ interface SkillCardProps {
 }
 
 export default function SkillCard({ title, icon, tags, image }: SkillCardProps) {
+    const [isMobile, setIsMobile] = useState(false);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
@@ -20,7 +23,12 @@ export default function SkillCard({ title, icon, tags, image }: SkillCardProps) 
     const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["17.5deg", "-17.5deg"]);
     const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-17.5deg", "17.5deg"]);
 
+    useEffect(() => {
+        if (window.innerWidth < 768) setIsMobile(true);
+    }, []);
+
     const handleMouseMove = (e: React.MouseEvent) => {
+        if (isMobile) return;
         const rect = e.currentTarget.getBoundingClientRect();
         const width = rect.width;
         const height = rect.height;
@@ -44,20 +52,22 @@ export default function SkillCard({ title, icon, tags, image }: SkillCardProps) 
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{
-                rotateX,
-                rotateY,
+                rotateX: isMobile ? 0 : rotateX,
+                rotateY: isMobile ? 0 : rotateY,
                 transformStyle: "preserve-3d",
             }}
-            className="relative h-80 md:h-96 w-full glass neon-border-blue p-8 flex flex-col items-center justify-center gap-6 group overflow-hidden backdrop-blur-xl"
+            className="relative h-auto min-h-[300px] w-full glass neon-border-blue p-6 md:p-8 flex flex-col items-center justify-center gap-4 md:gap-6 group overflow-hidden md:backdrop-blur-xl bg-black/60 md:bg-black/20"
         >
             {/* Background Image */}
             {image && (
                 <>
-                    <div
-                        className="absolute inset-0 z-0 bg-cover bg-center opacity-30 group-hover:opacity-50 group-hover:scale-110 transition-all duration-700"
-                        style={{ backgroundImage: `url(${image})` }}
+                    <Image
+                        src={image}
+                        alt={title}
+                        fill
+                        className="object-cover opacity-20 md:opacity-30 group-hover:opacity-50 group-hover:scale-110 transition-all duration-700 z-0"
                     />
-                    <div className="absolute inset-0 bg-black/60 z-[1]"></div>
+                    <div className="absolute inset-0 bg-black/50 md:bg-black/60 z-[1]"></div>
                 </>
             )}
 
@@ -66,7 +76,7 @@ export default function SkillCard({ title, icon, tags, image }: SkillCardProps) 
                     transform: "translateZ(75px)",
                     transformStyle: "preserve-3d",
                 }}
-                className="relative z-10 text-6xl text-neon-blue group-hover:text-neon-pink transition-colors duration-500"
+                className="relative z-10 text-5xl md:text-6xl text-neon-blue group-hover:text-neon-pink transition-colors duration-500"
             >
                 {icon}
             </div>

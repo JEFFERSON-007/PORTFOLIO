@@ -1,24 +1,38 @@
 "use client";
 
-import { useRef, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Float, Sphere, MeshDistortMaterial, Points, PointMaterial } from "@react-three/drei";
+import { useRef, useMemo, useState, useEffect } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import { Float, Sphere, MeshDistortMaterial, Points, PointMaterial, MeshWobbleMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
 export default function Hero3D() {
     const sphereRef = useRef<THREE.Mesh>(null);
     const particlesRef = useRef<THREE.Points>(null);
+    const [scale, setScale] = useState(1.8);
 
-    // Generate random particles
-    const particleCount = 2000;
-    const positions = useMemo(() => {
+    const [particleCount, setParticleCount] = useState(1500);
+    const [segments, setSegments] = useState(128);
+    const [isMobile, setIsMobile] = useState(false);
+    const [positions, setPositions] = useState<Float32Array>(new Float32Array(0));
+
+    useEffect(() => {
+        if (window.innerWidth < 768) {
+            setIsMobile(true);
+            setParticleCount(500);
+            setSegments(24);
+        } else {
+            setIsMobile(false);
+            setParticleCount(1500);
+            setSegments(64);
+        }
+
         const pos = new Float32Array(particleCount * 3);
         for (let i = 0; i < particleCount; i++) {
             pos[i * 3] = (Math.random() - 0.5) * 20;
             pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
             pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
         }
-        return pos;
+        setPositions(pos);
     }, []);
 
     const smoothedScroll = useRef(0);
@@ -51,42 +65,55 @@ export default function Hero3D() {
             particlesRef.current.position.y = THREE.MathUtils.damp(particlesRef.current.position.y, -(scrollPosition * 0.2), 1, delta);
         }
 
-        // Camera Dynamics: Smooth Mouse + Scroll Depth
-        const targetCamZ = 5 - (scrollPosition * 0.5) + Math.sin(time * 0.5) * 0.5;
-        state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, targetCamZ, 2, delta);
-        state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, state.mouse.x * 2.5, 2, delta);
-        state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, (state.mouse.y * 2.5) - (scrollPosition * 0.2), 2, delta);
-        state.camera.lookAt(0, 0, 0);
+        if (!isMobile) {
+            // Camera Dynamics: Smooth Mouse + Scroll Depth
+            const targetCamZ = 5 - (scrollPosition * 0.5) + Math.sin(time * 0.5) * 0.5;
+            state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, targetCamZ, 2, delta);
+            state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, state.mouse.x * 2.5, 2, delta);
+            state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, (state.mouse.y * 2.5) - (scrollPosition * 0.2), 2, delta);
+            state.camera.lookAt(0, 0, 0);
+        }
     });
 
     return (
         <>
             <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-                <Sphere ref={sphereRef} args={[1, 128, 128]} scale={typeof window !== 'undefined' && window.innerWidth < 768 ? 1.2 : 1.8}>
-                    <MeshDistortMaterial
-                        color="#00f3ff"
-                        attach="material"
-                        distort={0.5}
-                        speed={3}
-                        roughness={0}
-                        metalness={1}
-                        emissive="#bc13fe"
-                        emissiveIntensity={0.8}
-                    />
+                <Sphere ref={sphereRef} args={[1, segments, segments]} scale={scale}>
+                    {isMobile ? (
+                        <meshPhongMaterial
+                            color="#00f3ff"
+                            emissive="#bc13fe"
+                            emissiveIntensity={0.5}
+                            shininess={100}
+                        />
+                    ) : (
+                        <MeshDistortMaterial
+                            color="#00f3ff"
+                            attach="material"
+                            distort={0.5}
+                            speed={3}
+                            roughness={0}
+                            metalness={1}
+                            emissive="#bc13fe"
+                            emissiveIntensity={0.4}
+                        />
+                    )}
                 </Sphere>
             </Float>
 
             {/* Background Particles */}
-            <Points ref={particlesRef} positions={positions} stride={3}>
-                <PointMaterial
-                    transparent
-                    color="#ffffff"
-                    size={0.02}
-                    sizeAttenuation={true}
-                    depthWrite={false}
-                    blending={THREE.AdditiveBlending}
-                />
-            </Points>
+            {positions.length > 0 && (
+                <Points ref={particlesRef} positions={positions} stride={3}>
+                    <PointMaterial
+                        transparent
+                        color="#ffffff"
+                        size={0.02}
+                        sizeAttenuation={true}
+                        depthWrite={false}
+                        blending={THREE.AdditiveBlending}
+                    />
+                </Points>
+            )}
         </>
     );
 }

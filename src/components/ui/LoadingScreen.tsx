@@ -36,14 +36,21 @@ export default function LoadingScreen() {
                         />
                     </div>
 
-                    <div className="overflow-hidden">
+                    <div className="flex flex-col items-center gap-2">
                         <motion.p
                             initial={{ y: "100%" }}
                             animate={{ y: 0 }}
-                            className="text-2xl font-bold tracking-[0.4em] uppercase text-neon-blue"
+                            className="text-lg md:text-2xl font-bold tracking-[0.4em] uppercase text-neon-blue text-center mb-2"
                         >
-                            Initializing... {progress}%
+                            Initializing...
                         </motion.p>
+                        <motion.span 
+                            className="text-4xl md:text-6xl font-black text-white"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                        >
+                            {progress}%
+                        </motion.span>
                     </div>
 
 

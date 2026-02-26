@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { ExternalLink, Github } from "lucide-react";
 
 interface ProjectCardProps {
@@ -15,14 +16,17 @@ interface ProjectCardProps {
 export default function ProjectCard({ title, description, tags, image, githubUrl, liveUrl }: ProjectCardProps) {
     return (
         <motion.div
-            className="group relative h-[400px] md:h-[450px] w-full glass overflow-hidden rounded-2xl border border-white/5 hover:border-neon-blue/30 transition-all duration-500"
-            whileHover={{ y: -10 }}
+            className="group relative h-[380px] md:h-[450px] w-full glass overflow-hidden rounded-2xl border border-white/5 hover:border-neon-blue/30 transition-all duration-500"
+            whileHover={{ y: -5 }}
+            whileTap={{ scale: 0.98 }}
         >
             {/* Background Image */}
             {image && (
-                <div
-                    className="absolute inset-0 z-0 bg-cover bg-center opacity-80 group-hover:scale-110 transition-transform duration-700"
-                    style={{ backgroundImage: `url(${image})` }}
+                <Image
+                    src={image}
+                    alt={title}
+                    fill
+                    className="object-cover opacity-80 group-hover:scale-110 transition-transform duration-700 z-0"
                 />
             )}
 

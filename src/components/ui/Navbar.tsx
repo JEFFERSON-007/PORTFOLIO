@@ -32,32 +32,19 @@ export default function Navbar() {
             if (!homeSection) return;
 
             const scrollY = window.scrollY;
-            const isMobile = window.innerWidth < 768;
+            const horizontalScrollStart = homeSection.offsetHeight;
+            const scrollDistance = window.innerHeight * 4;
+            const horizontalScrollEnd = horizontalScrollStart + scrollDistance;
 
-            if (isMobile) {
-                // Simplified mobile scroll detection
-                const sections = navItems.map(item => document.getElementById(item.id));
-                const current = sections.findIndex(section => {
-                    if (!section) return false;
-                    const rect = section.getBoundingClientRect();
-                    return rect.top >= -100 && rect.top <= window.innerHeight / 2;
-                });
-                if (current !== -1) setActiveSection(navItems[current].id);
+            if (scrollY < horizontalScrollStart - 50) {
+                setActiveSection("home");
+            } else if (scrollY > horizontalScrollEnd - 50) {
+                setActiveSection("connect");
             } else {
-                const horizontalScrollStart = homeSection.offsetHeight;
-                const scrollDistance = window.innerHeight * 4;
-                const horizontalScrollEnd = horizontalScrollStart + scrollDistance;
-
-                if (scrollY < horizontalScrollStart - 50) {
-                    setActiveSection("home");
-                } else if (scrollY > horizontalScrollEnd - 50) {
-                    setActiveSection("connect");
-                } else {
-                    const progress = (scrollY - horizontalScrollStart) / scrollDistance;
-                    const panelIds = ["about", "skills", "projects", "timeline", "connect"];
-                    const panelIndex = Math.min(Math.max(Math.floor(progress * (panelIds.length - 1) + 0.5), 0), panelIds.length - 1);
-                    setActiveSection(panelIds[panelIndex]);
-                }
+                const progress = (scrollY - horizontalScrollStart) / scrollDistance;
+                const panelIds = ["about", "skills", "projects", "timeline", "connect"];
+                const panelIndex = Math.min(Math.max(Math.floor(progress * (panelIds.length - 1) + 0.5), 0), panelIds.length - 1);
+                setActiveSection(panelIds[panelIndex]);
             }
         };
 
@@ -75,10 +62,8 @@ export default function Navbar() {
         const section = document.getElementById(id);
         if (!section) return;
 
-        const isMobile = window.innerWidth < 768;
-
-        if (isMobile || id === "home") {
-            gsap.to(window, { duration: 1.2, scrollTo: section.offsetTop, ease: "power2.inOut" });
+        if (id === "home") {
+            gsap.to(window, { duration: 1.2, scrollTo: 0, ease: "power2.inOut" });
         } else {
             const homeSection = document.getElementById("home");
             if (!homeSection) return;
@@ -100,7 +85,7 @@ export default function Navbar() {
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 2 }}
-                className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled || isMobileMenuOpen ? "py-4 bg-transparent backdrop-blur-sm" : "py-8 bg-transparent"
+                className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled || isMobileMenuOpen ? "py-4 bg-transparent" : "py-8 bg-transparent"
                     }`}
             >
                 <div className="max-w-7xl mx-auto px-6 md:px-10 flex justify-between items-center">
@@ -138,30 +123,57 @@ export default function Navbar() {
 
             {/* Mobile Menu Overlay */}
             <motion.div
-                initial={{ opacity: 0, x: "100%" }}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{
                     opacity: isMobileMenuOpen ? 1 : 0,
-                    x: isMobileMenuOpen ? 0 : "100%"
+                    scale: isMobileMenuOpen ? 1 : 0.9,
+                    y: isMobileMenuOpen ? 0 : 20,
+                    pointerEvents: isMobileMenuOpen ? "all" : "none"
                 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed inset-0 z-[90] md:hidden bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center gap-8"
+                className="fixed inset-0 z-[90] md:hidden bg-black/98 backdrop-blur-3xl flex flex-col items-center justify-center gap-10"
             >
-                {navItems.map((item) => (
-                    <button
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,243,255,0.1),transparent)] opacity-50"></div>
+
+                {navItems.map((item, index) => (
+                    <motion.button
                         key={item.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{
+                            opacity: isMobileMenuOpen ? 1 : 0,
+                            y: isMobileMenuOpen ? 0 : 20
+                        }}
+                        transition={{ delay: isMobileMenuOpen ? 0.1 + index * 0.1 : 0 }}
                         onClick={() => scrollToSection(item.id)}
-                        className={`text-2xl uppercase tracking-[0.2em] font-bold transition-all ${activeSection === item.id ? "text-neon-blue" : "text-white/40"
+                        className={`text-lg uppercase tracking-[0.4em] font-black transition-all hover:text-neon-blue relative group w-full text-center py-1 ${activeSection === item.id ? "text-neon-blue" : "text-white/40"
                             }`}
                     >
                         {item.name}
-                    </button>
+                        {activeSection === item.id && (
+                            <motion.span
+                                layoutId="activeMobileNav"
+                                className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-1 h-1 bg-neon-blue rounded-full shadow-[0_0_10px_#00f3ff]"
+                            />
+                        )}
+                    </motion.button>
                 ))}
-                <button
+
+                <motion.button
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                        opacity: isMobileMenuOpen ? 1 : 0,
+                        y: isMobileMenuOpen ? 0 : 20
+                    }}
+                    transition={{ delay: isMobileMenuOpen ? 0.1 + navItems.length * 0.1 : 0 }}
                     onClick={() => scrollToSection("connect")}
-                    className="mt-4 px-10 py-4 border border-neon-pink text-neon-pink uppercase tracking-widest font-bold rounded-full"
+                    className="mt-8 px-12 py-4 bg-neon-pink/10 border border-neon-pink text-neon-pink uppercase tracking-widest font-black rounded-full shadow-[0_0_20px_rgba(255,0,255,0.2)]"
                 >
                     Get in touch
-                </button>
+                </motion.button>
+
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.5em] text-white/20">
+                    Jefferson Raja A
+                </div>
             </motion.div>
         </>
     );

@@ -4,18 +4,33 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Environment, Preload, ScrollControls } from "@react-three/drei";
 import { Bloom, EffectComposer, Noise, Vignette } from "@react-three/postprocessing";
+import { useState, useEffect } from "react";
 import Hero3D from "./Hero3D";
 
 export default function Scene() {
+    const [isLowEnd, setIsLowEnd] = useState(false);
+
+    useEffect(() => {
+        if (window.innerWidth < 768) setIsLowEnd(true);
+    }, []);
+
     return (
         <Canvas
             shadows
             camera={{
-                position: [0, 0, typeof window !== 'undefined' && window.innerWidth < 768 ? 8 : 5],
-                fov: typeof window !== 'undefined' && window.innerWidth < 768 ? 45 : 35
+                position: [0, 0, 5], // Default for SSR
+                fov: 35 // Default for SSR
             }}
             gl={{ antialias: false, stencil: false, depth: true }}
-            dpr={[1, 2]}
+            dpr={isLowEnd ? 1 : [1, 2]}
+            onCreated={({ camera }) => {
+                // Adjust on client after creation
+                if (window.innerWidth < 768) {
+                    camera.position.z = 10;
+                    (camera as any).fov = 50;
+                    camera.updateProjectionMatrix();
+                }
+            }}
         >
             <color attach="background" args={["#050505"]} />
             <fog attach="fog" args={["#050505", 5, 15]} />
@@ -29,16 +44,18 @@ export default function Scene() {
                 <Environment preset="city" />
             </Suspense>
 
-            <EffectComposer enableNormalPass={false}>
-                <Bloom
-                    luminanceThreshold={0.2}
-                    mipmapBlur
-                    intensity={1.5}
-                    radius={0.4}
-                />
-                <Noise opacity={0.08} />
-                <Vignette eskil={false} offset={0.1} darkness={1.2} />
-            </EffectComposer>
+            {!isLowEnd ? (
+                <EffectComposer enableNormalPass={false}>
+                    <Bloom
+                        luminanceThreshold={0.2}
+                        mipmapBlur
+                        intensity={1.5}
+                        radius={0.4}
+                    />
+                    <Noise opacity={0.08} />
+                    <Vignette eskil={false} offset={0.1} darkness={1.2} />
+                </EffectComposer>
+            ) : null}
 
             <Preload all />
         </Canvas>
