@@ -151,6 +151,7 @@ export default function Home() {
                             />
                         </div>
 
+                        <div className="flex gap-6 md:gap-8 justify-center">
                             <div className="flex flex-col items-center">
                                 <span className="text-3xl md:text-4xl font-bold text-white">15+</span>
                                 <span className="text-[8px] md:text-[10px] uppercase tracking-widest opacity-40">Projects</span>
@@ -160,6 +161,7 @@ export default function Home() {
                                 <span className="text-3xl md:text-4xl font-bold text-white">2025</span>
                                 <span className="text-[8px] md:text-[10px] uppercase tracking-widest opacity-40">SIH Winner</span>
                             </div>
+                        </div>
                     </motion.div>
 
                     <div className="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
