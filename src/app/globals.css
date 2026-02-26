@@ -88,3 +88,13 @@ canvas {
 .panel-content::-webkit-scrollbar {
   display: none;
 }
+
+/* HIGH PRIORITY FALLBACK */
+body, html, #__next, .__next {
+  background-color: #050505 !important;
+  color: white !important;
+}
+
+main {
+  background-color: #050505 !important;
+}
