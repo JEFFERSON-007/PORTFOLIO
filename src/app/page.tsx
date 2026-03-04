@@ -26,6 +26,7 @@ export default function Home() {
     const panelsRef = useRef<HTMLDivElement[]>([]);
     const [isMobile, setIsMobile] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [isSent, setIsSent] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -330,7 +331,7 @@ export default function Home() {
 
                         {/* CONTACT PANEL */}
                         <section id="connect" className="panel section px-4 md:px-10 w-screen">
-                            <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 panel-content">
+                            <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 panel-content overflow-y-auto max-h-[85vh] md:max-h-none pr-4">
                                 <div>
                                     <h2 className="text-3xl md:text-7xl font-bold mb-6 md:mb-8 text-neon-pink uppercase tracking-tighter">Connect</h2>
                                     <p className="text-lg md:text-xl opacity-60 mb-12 max-w-sm">
@@ -376,7 +377,10 @@ export default function Home() {
                                         const subject = encodeURIComponent(`Portfolio Signal: ${inquiry}`);
                                         const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nInquiry: ${inquiry}\n\nMessage:\n${message}`);
                                         window.open(`mailto:mariyalpackiajothi@gmail.com?subject=${subject}&body=${body}`, '_self');
-                                    }} className="relative z-10 space-y-6">
+
+                                        setIsSent(true);
+                                        setTimeout(() => setIsSent(false), 5000);
+                                    }} className="relative z-10 space-y-6 pb-10">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-2">
                                                 <label className="text-[10px] uppercase tracking-widest opacity-40">Your Name</label>
@@ -418,9 +422,13 @@ export default function Home() {
                                         </div>
                                         <button
                                             type="submit"
-                                            className="flex items-center justify-center gap-3 w-full bg-white text-black font-bold py-5 uppercase tracking-[0.4em] hover:bg-neon-pink hover:text-white transition-all duration-500 group"
+                                            className={`flex items-center justify-center gap-3 w-full font-bold py-5 uppercase tracking-[0.4em] transition-all duration-500 group ${isSent ? 'bg-neon-pink text-white' : 'bg-white text-black hover:bg-neon-pink hover:text-white'}`}
                                         >
-                                            Transmit <Send size={18} className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
+                                            {isSent ? (
+                                                <>SIGNAL SENT! <Send size={18} /></>
+                                            ) : (
+                                                <>Transmit <Send size={18} className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" /></>
+                                            )}
                                         </button>
                                     </form>
                                 </div>
