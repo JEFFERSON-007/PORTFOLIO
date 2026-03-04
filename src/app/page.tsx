@@ -376,7 +376,7 @@ export default function Home() {
                                         const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
                                         const subject = encodeURIComponent(`Portfolio Signal: ${inquiry}`);
                                         const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nInquiry: ${inquiry}\n\nMessage:\n${message}`);
-                                        window.open(`mailto:mariyalpackiajothi@gmail.com?subject=${subject}&body=${body}`, '_self');
+                                        window.location.href = `mailto:mariyalpackiajothi@gmail.com?subject=${subject}&body=${body}`;
 
                                         setIsSent(true);
                                         setTimeout(() => setIsSent(false), 5000);
@@ -422,12 +422,12 @@ export default function Home() {
                                         </div>
                                         <button
                                             type="submit"
-                                            className={`flex items-center justify-center gap-3 w-full font-bold py-5 uppercase tracking-[0.4em] transition-all duration-500 group ${isSent ? 'bg-neon-pink text-white' : 'bg-white text-black hover:bg-neon-pink hover:text-white'}`}
+                                            className={`flex items-center justify-center gap-3 w-full font-bold py-5 uppercase tracking-[0.4em] transition-all duration-500 !opacity-100 relative z-30 ${isSent ? 'bg-neon-pink text-white' : 'bg-white text-black hover:bg-neon-pink hover:text-white'}`}
                                         >
                                             {isSent ? (
                                                 <>SIGNAL SENT! <Send size={18} /></>
                                             ) : (
-                                                <>Transmit <Send size={18} className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" /></>
+                                                <>Transmit <Send size={18} className="transition-transform group-hover:translate-x-2 group-hover:-translate-y-2" /></>
                                             )}
                                         </button>
                                     </form>
@@ -444,10 +444,10 @@ export default function Home() {
                         © 2026 JEFFERSON RAJA A • All Rights Reserved
                     </div>
                 </footer>
-            </div>
+            </div >
 
             {/* FORCE SYNC CSS - App Router compatible injection */}
-            <style dangerouslySetInnerHTML={{
+            < style dangerouslySetInnerHTML={{
                 __html: `
                 .panel { 
                     width: 100vw !important; 
@@ -462,7 +462,8 @@ export default function Home() {
                     display: flex !important;
                     flex-direction: row !important;
                 }
-            ` }} />
-        </main>
+            ` }
+            } />
+        </main >
     );
 }
