@@ -181,7 +181,7 @@ export default function Navbar() {
                     onClick={() => scrollToSection("connect")}
                     className="mt-8 px-12 py-4 bg-neon-pink/10 border border-neon-pink text-neon-pink uppercase tracking-widest font-black rounded-full shadow-[0_0_20px_rgba(255,0,255,0.2)]"
                 >
-                    Get in touch
+                    Signal
                 </motion.button>
 
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.5em] text-white/20">
