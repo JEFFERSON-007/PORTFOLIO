@@ -351,16 +351,22 @@ export default function Home() {
                                             <span>Coimbatore</span>
                                         </div>
                                         <div className="flex flex-wrap gap-6 mt-8">
-                                            <a href="https://github.com/JEFFERSON-007" target="_blank" className="hover:text-neon-blue transition-colors">GitHub</a>
-                                            <a href="https://www.linkedin.com/in/jefferson-raja-a-170740323/" target="_blank" className="hover:text-neon-blue transition-colors">LinkedIn</a>
+                                            <a href="https://github.com/JEFFERSON-007" target="_blank" className="hover:text-neon-blue transition-colors text-[10px] uppercase tracking-widest font-bold">GitHub</a>
+                                            <a href="https://www.linkedin.com/in/jefferson-raja-a-170740323/" target="_blank" className="hover:text-neon-blue transition-colors text-[10px] uppercase tracking-widest font-bold">LinkedIn</a>
+                                        </div>
+
+                                        <div className="mt-12 pt-8 border-t border-white/5">
                                             <a
-                                                href="resume.pdf"
-                                                download
-                                                className="flex items-center gap-2 px-4 py-2 bg-neon-pink/10 hover:bg-neon-pink/20 border border-neon-pink/30 rounded-full transition-all group"
+                                                href="mailto:mariyalpackiajothi@gmail.com?subject=Portfolio Signal"
+                                                className="inline-flex items-center gap-4 px-8 py-4 bg-neon-pink text-white font-black uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-300 group shadow-[0_0_20px_rgba(255,0,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
                                             >
-                                                <Download size={14} className="text-neon-pink group-hover:scale-110 transition-transform" />
-                                                <span className="text-[10px] uppercase tracking-widest font-bold">Resume</span>
+                                                <Mail size={20} className="group-hover:rotate-12 transition-transform" />
+                                                Signal Now
                                             </a>
+                                            <p className="text-[9px] uppercase tracking-[0.2em] opacity-30 mt-4 leading-relaxed">
+                                                Click to open your mail app directly.<br />
+                                                Failsafe connection established.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -430,6 +436,15 @@ export default function Home() {
                                                 <>Transmit <Send size={18} className="transition-transform group-hover:translate-x-2 group-hover:-translate-y-2" /></>
                                             )}
                                         </button>
+                                        <div className="text-center mt-4">
+                                            <p className="text-[10px] uppercase tracking-[0.2em] opacity-40 mb-2">Trouble with the button?</p>
+                                            <a
+                                                href="mailto:mariyalpackiajothi@gmail.com?subject=Portfolio Inquiry"
+                                                className="text-[10px] uppercase tracking-[0.3em] text-neon-pink hover:text-neon-blue transition-colors underline underline-offset-4"
+                                            >
+                                                Send direct email instead
+                                            </a>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
