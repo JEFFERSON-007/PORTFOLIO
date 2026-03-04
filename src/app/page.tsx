@@ -207,7 +207,7 @@ export default function Home() {
 
                         <section id="about" className="panel section py-0 w-screen">
                             <div className="max-w-6xl w-full flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-20 items-center px-4 md:px-10 h-full">
-                                <div className="panel-content z-20 bg-black/60 md:bg-black/40 md:backdrop-blur-2xl p-6 md:p-12 rounded-[30px] md:rounded-[40px] border border-white/10 shadow-2xl order-2 md:order-1">
+                                <div className="panel-content z-20 bg-black/60 md:bg-black/40 md:backdrop-blur-2xl p-6 md:p-12 rounded-[30px] md:rounded-[40px] border border-white/10 shadow-2xl order-2 md:order-1 overflow-y-auto max-h-[80vh] md:max-h-none mt-20 md:mt-0">
                                     <h2 className="text-3xl md:text-8xl font-black mb-6 neon-text-blue uppercase tracking-tighter">About</h2>
                                     <p className="text-xl md:text-2xl font-light leading-relaxed mb-8 text-white">
                                         I am a <span className="text-neon-pink text-shadow-glow">Cybersecurity Specialist</span> and Software Developer dedicated to
@@ -241,7 +241,7 @@ export default function Home() {
 
                         {/* SKILLS PANEL */}
                         <section id="skills" className="panel section px-4 md:px-10 w-screen">
-                            <div className="w-full max-w-6xl panel-content">
+                            <div className="w-full max-w-6xl panel-content overflow-y-auto max-h-[85vh] md:max-h-none px-2 pb-20 md:pb-0">
                                 <div className="flex justify-between items-end mb-10 md:mb-16">
                                     <h2 className="text-3xl md:text-8xl font-black neon-text-blue uppercase tracking-tighter">Skills</h2>
                                     <p className="text-neon-blue uppercase tracking-widest text-[10px] mb-4 opacity-60">Core Technologies</p>
@@ -277,7 +277,7 @@ export default function Home() {
 
                         {/* PROJECTS PANEL */}
                         <section id="projects" className="panel section px-4 md:px-10 w-screen">
-                            <div className="w-full max-w-6xl panel-content">
+                            <div className="w-full max-w-6xl panel-content overflow-y-auto max-h-[85vh] md:max-h-none px-2 pb-20 md:pb-0">
                                 <h2 className="text-3xl md:text-8xl font-black mb-10 md:mb-16 text-right neon-text-blue uppercase tracking-tighter">Projects</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                                     <ProjectCard
@@ -307,7 +307,7 @@ export default function Home() {
 
                         {/* EXPERIENCE PANEL */}
                         <section id="timeline" className="panel section px-4 md:px-10 w-screen">
-                            <div className="max-w-4xl w-full panel-content">
+                            <div className="max-w-4xl w-full panel-content overflow-y-auto max-h-[85vh] md:max-h-none px-2 pb-20 md:pb-0">
                                 <h2 className="text-3xl md:text-7xl font-bold mb-10 md:mb-12 text-neon-purple uppercase tracking-tighter">Timeline</h2>
                                 <div className="space-y-12 border-l-2 border-white/10 pl-8 md:pl-12 ml-4 md:ml-6">
                                     {[
@@ -337,10 +337,10 @@ export default function Home() {
                                         Ready to launch your next digital venture into the stratosphere? Send a signal.
                                     </p>
                                     <div className="space-y-6">
-                                        <div className="flex items-center gap-4 text-lg">
-                                            <Mail className="text-neon-pink" />
+                                        <a href="mailto:mariyalpackiajothi@gmail.com" className="flex items-center gap-4 text-lg hover:text-neon-pink transition-colors group">
+                                            <Mail className="text-neon-pink group-hover:scale-110 transition-transform" />
                                             <span>mariyalpackiajothi@gmail.com</span>
-                                        </div>
+                                        </a>
                                         <div className="flex items-center gap-4 text-lg">
                                             <Phone className="text-neon-pink" />
                                             <span>+91 8778646082</span>
@@ -385,9 +385,12 @@ export default function Home() {
                                             <label className="text-[10px] uppercase tracking-widest opacity-40">Message</label>
                                             <textarea className="w-full bg-white/5 border-b border-white/20 p-3 h-32 focus:border-neon-pink outline-none transition-colors resize-none"></textarea>
                                         </div>
-                                        <button className="flex items-center justify-center gap-3 w-full bg-white text-black font-bold py-5 uppercase tracking-[0.4em] hover:bg-neon-pink hover:text-white transition-all duration-500 group">
+                                        <a
+                                            href="mailto:mariyalpackiajothi@gmail.com?subject=Project Inquiry"
+                                            className="flex items-center justify-center gap-3 w-full bg-white text-black font-bold py-5 uppercase tracking-[0.4em] hover:bg-neon-pink hover:text-white transition-all duration-500 group"
+                                        >
                                             Transmit <Send size={18} className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
-                                        </button>
+                                        </a>
                                     </form>
                                 </div>
                             </div>
