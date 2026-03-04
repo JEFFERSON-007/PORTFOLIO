@@ -27,9 +27,11 @@ body {
 ::-webkit-scrollbar {
   width: 5px;
 }
+
 ::-webkit-scrollbar-track {
   background: #050505;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--neon-blue);
   border-radius: 10px;
@@ -62,13 +64,15 @@ canvas {
 .horizontal-container {
   display: flex !important;
   flex-direction: row !important;
-  width: 500vw !important; /* 5 sections */
+  width: 500vw !important;
+  /* 5 sections */
   will-change: transform;
 }
 
 .horizontal-container-wrapper {
   overflow: hidden !important;
   width: 100vw !important;
+  touch-action: pan-y;
 }
 
 .section {
@@ -79,8 +83,9 @@ canvas {
   align-items: center;
   padding: 1.5rem;
   flex-shrink: 0;
-  overflow: hidden; /* Prevent boundary leaking */
+  overflow: hidden;
   position: relative;
+  touch-action: pan-y;
 }
 
 .panel-content {
@@ -96,7 +101,10 @@ canvas {
 }
 
 /* HIGH PRIORITY FALLBACK */
-body, html, #__next, .__next {
+body,
+html,
+#__next,
+.__next {
   background-color: #050505 !important;
   color: white !important;
 }

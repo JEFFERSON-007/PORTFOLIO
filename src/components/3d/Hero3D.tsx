@@ -79,25 +79,16 @@ export default function Hero3D() {
         <>
             <Float speed={2} rotationIntensity={1} floatIntensity={1}>
                 <Sphere ref={sphereRef} args={[1, segments, segments]} scale={scale}>
-                    {isMobile ? (
-                        <meshPhongMaterial
-                            color="#00f3ff"
-                            emissive="#bc13fe"
-                            emissiveIntensity={0.5}
-                            shininess={100}
-                        />
-                    ) : (
-                        <MeshDistortMaterial
-                            color="#00f3ff"
-                            attach="material"
-                            distort={0.5}
-                            speed={3}
-                            roughness={0}
-                            metalness={1}
-                            emissive="#bc13fe"
-                            emissiveIntensity={0.4}
-                        />
-                    )}
+                    <MeshDistortMaterial
+                        color="#00f3ff"
+                        attach="material"
+                        distort={0.5}
+                        speed={3}
+                        roughness={0}
+                        metalness={1}
+                        emissive="#bc13fe"
+                        emissiveIntensity={0.4}
+                    />
                 </Sphere>
             </Float>
 

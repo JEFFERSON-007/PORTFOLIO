@@ -28,23 +28,41 @@ export default function Home() {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
         gsap.registerPlugin(ScrollTrigger);
-        if (window.innerWidth < 768) setIsMobile(true);
+
+        const updateIsMobile = () => {
+            setIsMobile(window.innerWidth < 1024);
+            ScrollTrigger.refresh();
+        };
+
+        updateIsMobile();
+        window.addEventListener('resize', updateIsMobile);
+
         if (!horizontalRef.current) return;
 
         const sections = gsap.utils.toArray(".panel");
 
-        // GLOBAL: Horizontal Scroll logic for all screen sizes
+        // GLOBAL: Horizontal Scroll logic
         const scrollTween = gsap.to(sections, {
             xPercent: -100 * (sections.length - 1),
             ease: "none",
             scrollTrigger: {
                 trigger: horizontalRef.current,
                 pin: true,
-                scrub: window.innerWidth < 768 ? 0.5 : 1.5,
-                snap: 1 / (sections.length - 1),
-                end: () => "+=400%",
-                invalidateOnRefresh: true, // Crucial for responsive resizing
+                scrub: 1, // Smoother on all devices
+                snap: {
+                    snapTo: 1 / (sections.length - 1),
+                    duration: { min: 0.2, max: 0.8 },
+                    delay: 0.1,
+                    ease: "power1.inOut"
+                },
+                end: () => `+=${(sections.length - 1) * window.innerWidth}`, // Correct distance for all panels
+                invalidateOnRefresh: true,
             }
         });
 
@@ -95,23 +113,17 @@ export default function Home() {
             }
         });
 
-        // Fade out Scroll Indicator
-        gsap.to(".scroll-indicator", {
-            opacity: 0,
-            y: 20,
-            scrollTrigger: {
-                trigger: "#home",
-                start: "top top",
-                end: "bottom center",
-                scrub: true,
-            }
-        });
+        // Refresh after a short delay to ensure everything is rendered
+        const timer = setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 1000);
 
-        setMounted(true);
         return () => {
+            clearTimeout(timer);
+            window.removeEventListener('resize', updateIsMobile);
             ScrollTrigger.getAll().forEach(t => t.kill());
         };
-    }, []);
+    }, [mounted]);
 
     if (!mounted) return <div className="min-h-screen bg-[#050505]" />;
 
@@ -177,13 +189,13 @@ export default function Home() {
                 </section>
 
                 {/* HORIZONTAL WRAPPER */}
-                <div 
-                    id="horizontal-wrapper" 
-                    ref={horizontalRef} 
+                <div
+                    id="horizontal-wrapper"
+                    ref={horizontalRef}
                     className="horizontal-container-wrapper"
                     style={{ position: 'relative', width: '100vw', height: '100vh', minHeight: '100vh', maxHeight: '100vh', overflow: 'hidden' }}
                 >
-                    <div 
+                    <div
                         className="horizontal-container"
                         style={{ display: 'flex', flexDirection: 'row', width: '500vw', height: '100vh', minHeight: '100vh', maxHeight: '100vh', willChange: 'transform' }}
                     >
@@ -191,7 +203,7 @@ export default function Home() {
                         <section id="about" className="panel section py-0 w-screen">
                             <div className="max-w-6xl w-full flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-20 items-center px-4 md:px-10 h-full">
                                 <div className="panel-content z-20 bg-black/60 md:bg-black/40 md:backdrop-blur-2xl p-6 md:p-12 rounded-[30px] md:rounded-[40px] border border-white/10 shadow-2xl order-2 md:order-1">
-                                    <h2 className="text-4xl md:text-8xl font-black mb-6 neon-text-blue uppercase tracking-tighter">About</h2>
+                                    <h2 className="text-3xl md:text-8xl font-black mb-6 neon-text-blue uppercase tracking-tighter">About</h2>
                                     <p className="text-xl md:text-2xl font-light leading-relaxed mb-8 text-white">
                                         I am a <span className="text-neon-pink text-shadow-glow">Cybersecurity Specialist</span> and Software Developer dedicated to
                                         transforming complex security challenges into resilient, user-centric solutions.
@@ -226,20 +238,20 @@ export default function Home() {
                         <section id="skills" className="panel section px-4 md:px-10 w-screen">
                             <div className="w-full max-w-6xl panel-content">
                                 <div className="flex justify-between items-end mb-10 md:mb-16">
-                                    <h2 className="text-4xl md:text-8xl font-black neon-text-blue uppercase tracking-tighter">Skills</h2>
+                                    <h2 className="text-3xl md:text-8xl font-black neon-text-blue uppercase tracking-tighter">Skills</h2>
                                     <p className="text-neon-blue uppercase tracking-widest text-[10px] mb-4 opacity-60">Core Technologies</p>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                                     <SkillCard
                                         title="Cybersecurity"
                                         icon={<Cpu />}
-                                        tags={["Wireshark", "TryHackMe", "PicoCTF", "Batchfile", "KaliLinux"]}
+                                        tags={["Linux", "Python", "Wireshark", "Metasploit", "Gnubash"]}
                                         image="/skill-sec.png"
                                     />
                                     <SkillCard
                                         title="Web Dev"
                                         icon={<Globe />}
-                                        tags={["React", "Next.js", "JavaScript", "HTML5", "Dart"]}
+                                        tags={["React", "Nextdotjs", "Javascript", "Html5", "Tailwindcss"]}
                                         image="/skill-web.png"
                                     />
                                     <SkillCard
@@ -251,7 +263,7 @@ export default function Home() {
                                     <SkillCard
                                         title="Data & Core"
                                         icon={<Cpu />}
-                                        tags={["PostgreSQL", "MySQL", "JSON", "Git", "TensorFlow"]}
+                                        tags={["Postgresql", "Mysql", "Git", "Tensorflow", "Nvidia"]}
                                         image="/skill-data.png"
                                     />
                                 </div>
@@ -261,7 +273,7 @@ export default function Home() {
                         {/* PROJECTS PANEL */}
                         <section id="projects" className="panel section px-4 md:px-10 w-screen">
                             <div className="w-full max-w-6xl panel-content">
-                                <h2 className="text-4xl md:text-8xl font-black mb-10 md:mb-16 text-right neon-text-blue uppercase tracking-tighter">Projects</h2>
+                                <h2 className="text-3xl md:text-8xl font-black mb-10 md:mb-16 text-right neon-text-blue uppercase tracking-tighter">Projects</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                                     <ProjectCard
                                         title="Dataset Visualizer"
@@ -291,7 +303,7 @@ export default function Home() {
                         {/* EXPERIENCE PANEL */}
                         <section id="timeline" className="panel section px-4 md:px-10 w-screen">
                             <div className="max-w-4xl w-full panel-content">
-                                <h2 className="text-4xl md:text-7xl font-bold mb-10 md:mb-12 text-neon-purple uppercase tracking-tighter">Timeline</h2>
+                                <h2 className="text-3xl md:text-7xl font-bold mb-10 md:mb-12 text-neon-purple uppercase tracking-tighter">Timeline</h2>
                                 <div className="space-y-12 border-l-2 border-white/10 pl-8 md:pl-12 ml-4 md:ml-6">
                                     {[
                                         { year: "2025", role: "Smart India Hackathon Winner", company: "National Finale" },
@@ -314,7 +326,7 @@ export default function Home() {
                         <section id="connect" className="panel section px-4 md:px-10 w-screen">
                             <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 panel-content">
                                 <div>
-                                    <h2 className="text-4xl md:text-7xl font-bold mb-6 md:mb-8 text-neon-pink uppercase tracking-tighter">Connect</h2>
+                                    <h2 className="text-3xl md:text-7xl font-bold mb-6 md:mb-8 text-neon-pink uppercase tracking-tighter">Connect</h2>
                                     <p className="text-lg md:text-xl opacity-60 mb-12 max-w-sm">
                                         Ready to launch your next digital venture into the stratosphere? Send a signal.
                                     </p>
@@ -335,7 +347,7 @@ export default function Home() {
                                             <a href="https://github.com/JEFFERSON-007" target="_blank" className="hover:text-neon-blue transition-colors">GitHub</a>
                                             <a href="https://www.linkedin.com/in/jefferson-raja-a-170740323/" target="_blank" className="hover:text-neon-blue transition-colors">LinkedIn</a>
                                             <a
-                                                href="/resume.pdf"
+                                                href="resume.pdf"
                                                 download
                                                 className="flex items-center gap-2 px-4 py-2 bg-neon-pink/10 hover:bg-neon-pink/20 border border-neon-pink/30 rounded-full transition-all group"
                                             >
@@ -385,9 +397,10 @@ export default function Home() {
                     </div>
                 </footer>
             </div>
-            
+
             {/* FORCE SYNC CSS - App Router compatible injection */}
-            <style dangerouslySetInnerHTML={{ __html: `
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 .panel { 
                     width: 100vw !important; 
                     flex-shrink: 0 !important; 

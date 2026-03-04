@@ -26,31 +26,45 @@ export default function LoadingScreen() {
         <AnimatePresence>
             {loading && (
                 <motion.div
-                    className="fixed inset-0 z-[1000] bg-[#050505] flex flex-col items-center justify-center"
+                    className={`fixed inset-0 z-[1000] bg-[#050505] flex flex-col items-center justify-center ${progress === 100 ? "pointer-events-none" : ""}`}
                     exit={{ opacity: 0, y: -100, transition: { duration: 1, ease: [0.76, 0, 0.24, 1] } }}
                 >
-                    <div className="relative w-64 h-[2px] bg-white/10 mb-8 overflow-hidden">
-                        <motion.div
-                            className="absolute h-full bg-neon-blue"
-                            style={{ width: `${progress}%` }}
-                        />
-                    </div>
+                    {/* Neon Glow Background */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,243,255,0.05)_0%,transparent_70%)] animate-pulse"></div>
 
-                    <div className="flex flex-col items-center gap-2">
-                        <motion.p
-                            initial={{ y: "100%" }}
-                            animate={{ y: 0 }}
-                            className="text-lg md:text-2xl font-bold tracking-[0.4em] uppercase text-neon-blue text-center mb-2"
-                        >
-                            Initializing...
-                        </motion.p>
-                        <motion.span 
-                            className="text-4xl md:text-6xl font-black text-white"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                        >
-                            {progress}%
-                        </motion.span>
+                    <div className="relative z-10 flex flex-col items-center">
+                        <div className="relative w-64 md:w-80 h-[1px] bg-white/5 mb-12 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                            <motion.div
+                                className="absolute h-full bg-gradient-to-r from-transparent via-neon-blue to-transparent shadow-[0_0_15px_#00f3ff]"
+                                style={{ width: `${progress}%` }}
+                            />
+                            {/* Scanning line effect */}
+                            <motion.div
+                                className="absolute h-full w-20 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                                animate={{ left: ["-20%", "120%"] }}
+                                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                            />
+                        </div>
+
+                        <div className="flex flex-col items-center gap-4">
+                            <motion.div
+                                initial={{ opacity: 0, letterSpacing: "1em" }}
+                                animate={{ opacity: 1, letterSpacing: "0.5em" }}
+                                className="text-[10px] md:text-xs font-black uppercase text-neon-blue tracking-[0.5em] mb-2"
+                            >
+                                System Initializing
+                            </motion.div>
+                            <div className="relative">
+                                <motion.span
+                                    className="text-6xl md:text-8xl font-black text-white/90 tabular-nums"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                >
+                                    {progress}
+                                </motion.span>
+                                <span className="absolute -right-8 top-2 text-xl font-bold text-neon-blue/40">%</span>
+                            </div>
+                        </div>
                     </div>
 
 

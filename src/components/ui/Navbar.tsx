@@ -33,18 +33,18 @@ export default function Navbar() {
 
             const scrollY = window.scrollY;
             const horizontalScrollStart = homeSection.offsetHeight;
-            const scrollDistance = window.innerHeight * 4;
+            const scrollDistance = window.innerWidth * 4; // Matches the horizontal scroll distance
             const horizontalScrollEnd = horizontalScrollStart + scrollDistance;
 
-            if (scrollY < horizontalScrollStart - 50) {
+            if (scrollY < horizontalScrollStart - 100) {
                 setActiveSection("home");
-            } else if (scrollY > horizontalScrollEnd - 50) {
+            } else if (scrollY > horizontalScrollEnd - 100) {
                 setActiveSection("connect");
             } else {
                 const progress = (scrollY - horizontalScrollStart) / scrollDistance;
                 const panelIds = ["about", "skills", "projects", "timeline", "connect"];
-                const panelIndex = Math.min(Math.max(Math.floor(progress * (panelIds.length - 1) + 0.5), 0), panelIds.length - 1);
-                setActiveSection(panelIds[panelIndex]);
+                const panelIndex = Math.floor(progress * panelIds.length);
+                setActiveSection(panelIds[Math.min(panelIndex, panelIds.length - 1)]);
             }
         };
 
@@ -59,23 +59,36 @@ export default function Navbar() {
 
     const scrollToSection = (id: string) => {
         setIsMobileMenuOpen(false);
-        const section = document.getElementById(id);
-        if (!section) return;
+        const homeSection = document.getElementById("home");
 
         if (id === "home") {
-            gsap.to(window, { duration: 1.2, scrollTo: 0, ease: "power2.inOut" });
-        } else {
-            const homeSection = document.getElementById("home");
-            if (!homeSection) return;
-            const horizontalScrollStart = homeSection.offsetHeight;
-            const panelIds = ["about", "skills", "projects", "timeline", "connect"];
-            const panelIndex = panelIds.indexOf(id);
+            gsap.to(window, { duration: 0.8, scrollTo: 0, ease: "power2.inOut" });
+            return;
+        }
 
-            if (panelIndex !== -1) {
-                const scrollDistance = window.innerHeight * 4;
-                const scrollTarget = horizontalScrollStart + (panelIndex * (scrollDistance / (panelIds.length - 1)));
-                gsap.to(window, { duration: 1.2, scrollTo: scrollTarget, ease: "power2.inOut" });
-            }
+        if (!homeSection) return;
+
+        const panelIds = ["about", "skills", "projects", "timeline", "connect"];
+        const panelIndex = panelIds.indexOf(id);
+
+        if (panelIndex !== -1) {
+            const horizontalScrollStart = homeSection.offsetHeight;
+            const scrollDistance = window.innerWidth * 4;
+            // Target slightly past the snap point to ensure the section is definitely active
+            const scrollTarget = horizontalScrollStart + (panelIndex * (scrollDistance / (panelIds.length - 1))) + 2;
+
+            gsap.to(window, {
+                duration: 1,
+                scrollTo: scrollTarget,
+                ease: "power3.inOut",
+                onComplete: () => {
+                    setActiveSection(id);
+                    // Force a layout refresh for GSAP
+                    if (typeof window !== "undefined") {
+                        window.dispatchEvent(new Event('resize'));
+                    }
+                }
+            });
         }
     };
 
