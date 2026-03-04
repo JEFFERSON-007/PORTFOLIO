@@ -40,6 +40,11 @@ export default function Home() {
             ScrollTrigger.refresh();
         };
 
+        ScrollTrigger.config({
+            limitCallbacks: true,
+            syncInterval: 100
+        });
+
         updateIsMobile();
         window.addEventListener('resize', updateIsMobile);
 
@@ -54,14 +59,14 @@ export default function Home() {
             scrollTrigger: {
                 trigger: horizontalRef.current,
                 pin: true,
-                scrub: 1, // Smoother on all devices
+                scrub: isMobile ? true : 0.5, // Much more responsive on mobile touch
                 snap: {
                     snapTo: 1 / (sections.length - 1),
-                    duration: { min: 0.2, max: 0.8 },
-                    delay: 0.1,
+                    duration: { min: 0.1, max: 0.5 },
+                    delay: 0.05,
                     ease: "power1.inOut"
                 },
-                end: () => `+=${(sections.length - 1) * window.innerWidth}`, // Correct distance for all panels
+                end: () => `+=${(sections.length - 1) * window.innerWidth}`,
                 invalidateOnRefresh: true,
             }
         });

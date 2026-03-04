@@ -18,13 +18,18 @@ export default function Scene() {
         <Canvas
             shadows
             camera={{
-                position: [0, 0, 5], // Default for SSR
-                fov: 35 // Default for SSR
+                position: [0, 0, 5],
+                fov: 35
             }}
-            gl={{ antialias: false, stencil: false, depth: true }}
-            dpr={isLowEnd ? 1 : [1, 2]}
+            gl={{
+                antialias: false,
+                stencil: false,
+                depth: true,
+                powerPreference: "high-performance",
+                preserveDrawingBuffer: false
+            }}
+            dpr={isLowEnd ? 1 : Math.min(window.devicePixelRatio, 1.5)}
             onCreated={({ camera }) => {
-                // Adjust on client after creation
                 if (window.innerWidth < 768) {
                     camera.position.z = 10;
                     (camera as any).fov = 50;

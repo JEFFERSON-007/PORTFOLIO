@@ -18,11 +18,11 @@ export default function Hero3D() {
     useEffect(() => {
         if (window.innerWidth < 768) {
             setIsMobile(true);
-            setParticleCount(500);
-            setSegments(24);
+            setParticleCount(300);
+            setSegments(16);
         } else {
             setIsMobile(false);
-            setParticleCount(1500);
+            setParticleCount(1000);
             setSegments(64);
         }
 

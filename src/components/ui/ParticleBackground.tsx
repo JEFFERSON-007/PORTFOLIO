@@ -57,15 +57,15 @@ export default function ParticleBackground() {
                             default: "bounce",
                         },
                         random: false,
-                        speed: 1,
+                        speed: 0.8,
                         straight: false,
                     },
                     number: {
                         density: {
                             enable: true,
-                            area: 800,
+                            area: 1000,
                         },
-                        value: 80,
+                        value: 40,
                     },
                     opacity: {
                         value: 0.3,
@@ -74,7 +74,7 @@ export default function ParticleBackground() {
                         type: "circle",
                     },
                     size: {
-                        value: { min: 1, max: 3 },
+                        value: { min: 1, max: 2 },
                     },
                 },
                 detectRetina: false,
