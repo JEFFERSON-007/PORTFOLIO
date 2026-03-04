@@ -26,49 +26,10 @@ export default function Home() {
     const panelsRef = useRef<HTMLDivElement[]>([]);
     const [isMobile, setIsMobile] = useState(false);
     const [mounted, setMounted] = useState(false);
-    const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        type: "Project Request",
-        message: ""
-    });
 
     useEffect(() => {
         setMounted(true);
     }, []);
-
-    const handleFormSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setFormStatus("sending");
-
-        try {
-            const response = await fetch("https://formsubmit.co/ajax/mariyalpackiajothi@gmail.com", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify({
-                    name: formData.name,
-                    email: formData.email,
-                    inquiry: formData.type,
-                    message: formData.message,
-                    _subject: `New Portfolio Message: ${formData.type}`
-                })
-            });
-
-            if (response.ok) {
-                setFormStatus("sent");
-                setFormData({ name: "", email: "", type: "Project Request", message: "" });
-                setTimeout(() => setFormStatus("idle"), 5000);
-            } else {
-                setFormStatus("error");
-            }
-        } catch (err) {
-            setFormStatus("error");
-        }
-    };
 
     useEffect(() => {
         if (!mounted) return;
@@ -405,15 +366,18 @@ export default function Home() {
 
                                 <div className="glass p-6 md:p-10 neon-border-blue relative overflow-hidden mt-10 md:mt-0">
                                     <div className="absolute -top-20 -right-20 w-64 h-64 bg-neon-pink/10 rounded-full blur-3xl"></div>
-                                    <form onSubmit={handleFormSubmit} className="relative z-10 space-y-6">
+                                    <form action="https://formsubmit.co/mariyalpackiajothi@gmail.com" method="POST" className="relative z-10 space-y-6">
+                                        <input type="hidden" name="_next" value="https://jefferson-007.github.io/PORTFOLIO/" />
+                                        <input type="hidden" name="_captcha" value="false" />
+                                        <input type="hidden" name="_subject" value="New Portfolio Signal" />
+                                        <input type="hidden" name="_template" value="table" />
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-2">
                                                 <label className="text-[10px] uppercase tracking-widest opacity-40">Your Name</label>
                                                 <input
                                                     type="text"
+                                                    name="name"
                                                     required
-                                                    value={formData.name}
-                                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                                     className="w-full bg-white/5 border-b border-white/20 p-3 focus:border-neon-pink outline-none transition-colors"
                                                 />
                                             </div>
@@ -421,9 +385,8 @@ export default function Home() {
                                                 <label className="text-[10px] uppercase tracking-widest opacity-40">Email Address</label>
                                                 <input
                                                     type="email"
+                                                    name="email"
                                                     required
-                                                    value={formData.email}
-                                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                                     className="w-full bg-white/5 border-b border-white/20 p-3 focus:border-neon-pink outline-none transition-colors"
                                                 />
                                             </div>
@@ -431,8 +394,7 @@ export default function Home() {
                                         <div className="space-y-2">
                                             <label className="text-[10px] uppercase tracking-widest opacity-40">Inquiry Type</label>
                                             <select
-                                                value={formData.type}
-                                                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                                                name="inquiry"
                                                 className="w-full bg-black/80 border-b border-white/20 p-3 focus:border-neon-pink outline-none transition-colors appearance-none text-white/60"
                                             >
                                                 <option>Project Request</option>
@@ -443,23 +405,16 @@ export default function Home() {
                                         <div className="space-y-2">
                                             <label className="text-[10px] uppercase tracking-widest opacity-40">Message</label>
                                             <textarea
+                                                name="message"
                                                 required
-                                                value={formData.message}
-                                                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                                 className="w-full bg-white/5 border-b border-white/20 p-3 h-32 focus:border-neon-pink outline-none transition-colors resize-none"
                                             ></textarea>
                                         </div>
                                         <button
                                             type="submit"
-                                            disabled={formStatus === "sending" || formStatus === "sent"}
-                                            className="flex items-center justify-center gap-3 w-full bg-white text-black font-bold py-5 uppercase tracking-[0.4em] hover:bg-neon-pink hover:text-white transition-all duration-500 group disabled:opacity-50"
+                                            className="flex items-center justify-center gap-3 w-full bg-white text-black font-bold py-5 uppercase tracking-[0.4em] hover:bg-neon-pink hover:text-white transition-all duration-500 group"
                                         >
-                                            {formStatus === "idle" && (
-                                                <>Transmit <Send size={18} className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" /></>
-                                            )}
-                                            {formStatus === "sending" && "TRANSMITTING..."}
-                                            {formStatus === "sent" && "SIGNAL SENT!"}
-                                            {formStatus === "error" && "ERROR - RETRY?"}
+                                            Transmit <Send size={18} className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
                                         </button>
                                     </form>
                                 </div>
