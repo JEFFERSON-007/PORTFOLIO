@@ -366,11 +366,17 @@ export default function Home() {
 
                                 <div className="glass p-6 md:p-10 neon-border-blue relative overflow-hidden mt-10 md:mt-0">
                                     <div className="absolute -top-20 -right-20 w-64 h-64 bg-neon-pink/10 rounded-full blur-3xl"></div>
-                                    <form action="https://formsubmit.co/mariyalpackiajothi@gmail.com" method="POST" className="relative z-10 space-y-6">
-                                        <input type="hidden" name="_next" value="https://jefferson-007.github.io/PORTFOLIO/" />
-                                        <input type="hidden" name="_captcha" value="false" />
-                                        <input type="hidden" name="_subject" value="New Portfolio Signal" />
-                                        <input type="hidden" name="_template" value="table" />
+                                    <form onSubmit={(e) => {
+                                        e.preventDefault();
+                                        const form = e.target as HTMLFormElement;
+                                        const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+                                        const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+                                        const inquiry = (form.elements.namedItem('inquiry') as HTMLSelectElement).value;
+                                        const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+                                        const subject = encodeURIComponent(`Portfolio Signal: ${inquiry}`);
+                                        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nInquiry: ${inquiry}\n\nMessage:\n${message}`);
+                                        window.open(`mailto:mariyalpackiajothi@gmail.com?subject=${subject}&body=${body}`, '_self');
+                                    }} className="relative z-10 space-y-6">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-2">
                                                 <label className="text-[10px] uppercase tracking-widest opacity-40">Your Name</label>
