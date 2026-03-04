@@ -311,6 +311,7 @@ export default function Home() {
                                 <h2 className="text-3xl md:text-7xl font-bold mb-10 md:mb-12 text-neon-purple uppercase tracking-tighter">Timeline</h2>
                                 <div className="space-y-12 border-l-2 border-white/10 pl-8 md:pl-12 ml-4 md:ml-6">
                                     {[
+                                        { year: "2025", role: "Aurelion - 3rd Winner", company: "Technical Symposium" },
                                         { year: "2025", role: "Smart India Hackathon Winner", company: "National Finale" },
                                         { year: "2024", role: "Cyberthon Finalist", company: "Cybersecurity Competition" },
                                         { year: "2024", role: "Codsoft Internship", company: "Web Development" },
