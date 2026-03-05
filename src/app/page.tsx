@@ -26,7 +26,7 @@ export default function Home() {
     const panelsRef = useRef<HTMLDivElement[]>([]);
     const [isMobile, setIsMobile] = useState(false);
     const [mounted, setMounted] = useState(false);
-    const [isSent, setIsSent] = useState(false);
+    const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
     useEffect(() => {
         setMounted(true);
@@ -358,9 +358,9 @@ export default function Home() {
                                         <div className="mt-12 pt-8 border-t border-white/5">
                                             <a
                                                 href="mailto:mariyalpackiajothi@gmail.com?subject=Portfolio Signal"
-                                                className="inline-flex items-center gap-4 px-8 py-4 bg-neon-pink text-white font-black uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-300 group shadow-[0_0_20px_rgba(255,0,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
+                                                className="inline-flex items-center gap-4 px-8 py-4 bg-neon-pink text-white font-black uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(255,0,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] !opacity-100"
                                             >
-                                                <Mail size={20} className="group-hover:rotate-12 transition-transform" />
+                                                <Mail size={20} />
                                                 Signal Now
                                             </a>
                                             <p className="text-[9px] uppercase tracking-[0.2em] opacity-30 mt-4 leading-relaxed">
@@ -373,19 +373,39 @@ export default function Home() {
 
                                 <div className="glass p-6 md:p-10 neon-border-blue relative overflow-hidden mt-10 md:mt-0">
                                     <div className="absolute -top-20 -right-20 w-64 h-64 bg-neon-pink/10 rounded-full blur-3xl"></div>
-                                    <form onSubmit={(e) => {
+                                    <form onSubmit={async (e) => {
                                         e.preventDefault();
+                                        setStatus("sending");
                                         const form = e.target as HTMLFormElement;
-                                        const name = (form.elements.namedItem('name') as HTMLInputElement).value;
-                                        const email = (form.elements.namedItem('email') as HTMLInputElement).value;
-                                        const inquiry = (form.elements.namedItem('inquiry') as HTMLSelectElement).value;
-                                        const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
-                                        const subject = encodeURIComponent(`Portfolio Signal: ${inquiry}`);
-                                        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nInquiry: ${inquiry}\n\nMessage:\n${message}`);
-                                        window.location.href = `mailto:mariyalpackiajothi@gmail.com?subject=${subject}&body=${body}`;
+                                        const formData = new FormData(form);
+                                        const data = Object.fromEntries(formData.entries());
 
-                                        setIsSent(true);
-                                        setTimeout(() => setIsSent(false), 5000);
+                                        try {
+                                            const res = await fetch("https://formsubmit.co/ajax/mariyalpackiajothi@gmail.com", {
+                                                method: "POST",
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'Accept': 'application/json'
+                                                },
+                                                body: JSON.stringify(data)
+                                            });
+
+                                            if (res.ok) {
+                                                setStatus("sent");
+                                                form.reset();
+                                                setTimeout(() => setStatus("idle"), 5000);
+                                            } else {
+                                                throw new Error("Failed to send");
+                                            }
+                                        } catch (err) {
+                                            console.error(err);
+                                            setStatus("error");
+                                            setTimeout(() => setStatus("idle"), 5000);
+                                            // Fallback to mailto on error
+                                            const subject = encodeURIComponent(`Portfolio Signal: ${data.inquiry}`);
+                                            const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\nInquiry: ${data.inquiry}\n\nMessage:\n${data.message}`);
+                                            window.location.href = `mailto:mariyalpackiajothi@gmail.com?subject=${subject}&body=${body}`;
+                                        }
                                     }} className="relative z-10 space-y-6 pb-10">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-2">
@@ -428,13 +448,17 @@ export default function Home() {
                                         </div>
                                         <button
                                             type="submit"
-                                            className={`flex items-center justify-center gap-3 w-full font-bold py-5 uppercase tracking-[0.4em] transition-all duration-500 !opacity-100 relative z-30 ${isSent ? 'bg-neon-pink text-white' : 'bg-white text-black hover:bg-neon-pink hover:text-white'}`}
+                                            disabled={status === "sending"}
+                                            className={`flex items-center justify-center gap-3 w-full font-bold py-5 uppercase tracking-[0.4em] transition-all duration-500 !opacity-100 relative z-30 ${status === "sent" ? "bg-green-500 text-white" :
+                                                    status === "error" ? "bg-red-500 text-white" :
+                                                        status === "sending" ? "bg-gray-500 text-white animate-pulse" :
+                                                            "bg-white text-black hover:bg-neon-pink hover:text-white"
+                                                }`}
                                         >
-                                            {isSent ? (
-                                                <>SIGNAL SENT! <Send size={18} /></>
-                                            ) : (
-                                                <>Transmit <Send size={18} className="transition-transform group-hover:translate-x-2 group-hover:-translate-y-2" /></>
-                                            )}
+                                            {status === "sending" ? "TRANSMITTING..." :
+                                                status === "sent" ? "SIGNAL SENT!" :
+                                                    status === "error" ? "FAILED (TRYING MAILTO...)" :
+                                                        <>Transmit <Send size={18} className="transition-transform group-hover:translate-x-2 group-hover:-translate-y-2" /></>}
                                         </button>
                                         <div className="text-center mt-4">
                                             <p className="text-[10px] uppercase tracking-[0.2em] opacity-40 mb-2">Trouble with the button?</p>
