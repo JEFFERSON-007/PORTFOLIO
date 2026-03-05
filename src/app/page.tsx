@@ -91,7 +91,8 @@ export default function Home() {
                     }
                 });
             }
-            if (content) {
+            // Animate each section's content on entrance - Skip Connect section for reliability
+            if (content && sectionId !== 'connect') {
                 gsap.from(content, {
                     y: 50,
                     opacity: 0,
@@ -103,6 +104,9 @@ export default function Home() {
                         toggleActions: "play none none reverse",
                     }
                 });
+            } else if (content && sectionId === 'connect') {
+                // Ensure connect is always visible
+                gsap.set(content, { opacity: 1, y: 0 });
             }
             if (cards.length > 0) {
                 gsap.from(cards, {
@@ -365,7 +369,7 @@ export default function Home() {
                                             </a>
                                             <p className="text-[9px] uppercase tracking-[0.2em] opacity-30 mt-4 leading-relaxed">
                                                 Click to open your mail app directly.<br />
-                                                Failsafe connection established.
+                                                Or manual copy: <span className="text-neon-pink select-all">mariyalpackiajothi@gmail.com</span>
                                             </p>
                                         </div>
                                     </div>
@@ -450,9 +454,9 @@ export default function Home() {
                                             type="submit"
                                             disabled={status === "sending"}
                                             className={`flex items-center justify-center gap-3 w-full font-bold py-5 uppercase tracking-[0.4em] transition-all duration-500 !opacity-100 relative z-30 ${status === "sent" ? "bg-green-500 text-white" :
-                                                    status === "error" ? "bg-red-500 text-white" :
-                                                        status === "sending" ? "bg-gray-500 text-white animate-pulse" :
-                                                            "bg-white text-black hover:bg-neon-pink hover:text-white"
+                                                status === "error" ? "bg-red-500 text-white" :
+                                                    status === "sending" ? "bg-gray-500 text-white animate-pulse" :
+                                                        "bg-white text-black hover:bg-neon-pink hover:text-white"
                                                 }`}
                                         >
                                             {status === "sending" ? "TRANSMITTING..." :
