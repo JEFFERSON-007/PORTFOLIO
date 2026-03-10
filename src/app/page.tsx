@@ -37,8 +37,10 @@ export default function Home() {
         gsap.registerPlugin(ScrollTrigger);
 
         const updateIsMobile = () => {
-            setIsMobile(window.innerWidth < 1024);
-            ScrollTrigger.refresh();
+            if (typeof window !== 'undefined') {
+                setIsMobile(window.innerWidth < 1024);
+                ScrollTrigger.refresh();
+            }
         };
 
         ScrollTrigger.config({
@@ -85,7 +87,7 @@ export default function Home() {
                     opacity: 0,
                     scrollTrigger: {
                         containerAnimation: scrollTween,
-                        trigger: section,
+                        trigger: section as Element,
                         start: "left center",
                         toggleActions: "play none none reverse",
                     }
@@ -99,7 +101,7 @@ export default function Home() {
                     delay: 0.2,
                     scrollTrigger: {
                         containerAnimation: scrollTween,
-                        trigger: section,
+                        trigger: section as Element,
                         start: "left center",
                         toggleActions: "play none none reverse",
                     }
@@ -108,14 +110,14 @@ export default function Home() {
                 // Ensure connect is always visible
                 gsap.set(content, { opacity: 1, y: 0 });
             }
-            if (cards.length > 0) {
+            if (cards && cards.length > 0) {
                 gsap.from(cards, {
                     y: 40,
                     opacity: 0,
                     stagger: 0.1,
                     scrollTrigger: {
                         containerAnimation: scrollTween,
-                        trigger: section,
+                        trigger: section as Element,
                         start: "left center",
                         toggleActions: "play none none reverse",
                     }

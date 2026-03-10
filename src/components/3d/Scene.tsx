@@ -28,7 +28,7 @@ export default function Scene() {
                 powerPreference: "high-performance",
                 preserveDrawingBuffer: false
             }}
-            dpr={isLowEnd ? 1 : Math.min(window.devicePixelRatio, 1.5)}
+            dpr={isLowEnd ? 1 : (typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 1.5) : 1)}
             onCreated={({ camera }) => {
                 if (window.innerWidth < 768) {
                     camera.position.z = 10;

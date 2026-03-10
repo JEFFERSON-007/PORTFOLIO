@@ -41,7 +41,7 @@ export default function Navbar() {
             } else if (scrollY > horizontalScrollEnd - 100) {
                 setActiveSection("connect");
             } else {
-                const progress = (scrollY - horizontalScrollStart) / scrollDistance;
+                const progress = (scrollY - horizontalScrollStart) / (scrollDistance || 1);
                 const panelIds = ["about", "skills", "projects", "timeline", "connect"];
                 const panelIndex = Math.floor(progress * panelIds.length);
                 setActiveSection(panelIds[Math.min(panelIndex, panelIds.length - 1)]);
