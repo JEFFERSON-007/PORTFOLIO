@@ -92,7 +92,7 @@ export default function Home() {
                 });
             }
             // Animate each section's content on entrance - Skip Connect section for reliability
-            if (content && sectionId !== 'connect') {
+            if (content && section.id !== 'connect') {
                 gsap.from(content, {
                     y: 50,
                     opacity: 0,
@@ -104,7 +104,7 @@ export default function Home() {
                         toggleActions: "play none none reverse",
                     }
                 });
-            } else if (content && sectionId === 'connect') {
+            } else if (content && section.id === 'connect') {
                 // Ensure connect is always visible
                 gsap.set(content, { opacity: 1, y: 0 });
             }
