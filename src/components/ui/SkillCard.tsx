@@ -56,7 +56,7 @@ export default function SkillCard({ title, icon, tags, image }: SkillCardProps) 
                 rotateY: isMobile ? 0 : rotateY,
                 transformStyle: "preserve-3d",
             }}
-            className="relative h-auto min-h-[300px] w-full glass neon-border-blue p-6 md:p-8 flex flex-col items-center justify-center gap-4 md:gap-6 group overflow-hidden md:backdrop-blur-xl bg-black/60 md:bg-black/20"
+            className="relative h-auto min-h-[300px] w-full glass border border-white/5 hover:border-neon-blue/40 hover:shadow-[0_0_40px_rgba(0,243,255,0.15)] transition-all duration-500 rounded-[2rem] p-6 md:p-8 flex flex-col items-center justify-center gap-4 md:gap-6 group overflow-hidden md:backdrop-blur-xl bg-black/60 md:bg-black/20"
         >
             {/* Background Image */}
             {image && (

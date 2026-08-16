@@ -2,32 +2,45 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useProgress } from "@react-three/drei";
 
 export default function LoadingScreen() {
     const [loading, setLoading] = useState(true);
-    const [progress, setProgress] = useState(0);
+    const { progress } = useProgress();
+    const [displayProgress, setDisplayProgress] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
+            setDisplayProgress((prev) => {
+                // Smoothly chase the actual Three.js load progress or gracefully auto-increment
+                const target = Math.max(progress, prev + 1);
+                if (target >= 100) {
                     clearInterval(timer);
-                    setTimeout(() => setLoading(false), 500);
+                    setTimeout(() => setLoading(false), 400);
                     return 100;
                 }
-                return prev + 1;
+                return Math.min(prev + (progress === 100 ? 5 : 1), target);
             });
         }, 20);
 
         return () => clearInterval(timer);
+    }, [progress]);
+
+    // Fallback just in case Three.js hangs
+    useEffect(() => {
+        const fallback = setTimeout(() => {
+            setDisplayProgress(100);
+            setTimeout(() => setLoading(false), 400);
+        }, 4000);
+        return () => clearTimeout(fallback);
     }, []);
 
     return (
         <AnimatePresence>
             {loading && (
                 <motion.div
-                    className={`fixed inset-0 z-[1000] bg-[#050505] flex flex-col items-center justify-center ${progress === 100 ? "pointer-events-none" : ""}`}
-                    exit={{ opacity: 0, y: -100, transition: { duration: 1, ease: [0.76, 0, 0.24, 1] } }}
+                    className={`fixed inset-0 z-[1000] bg-[#050505] flex flex-col items-center justify-center ${displayProgress === 100 ? "pointer-events-none" : ""}`}
+                    exit={{ opacity: 0, y: -100, transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
                 >
                     {/* Neon Glow Background */}
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,243,255,0.05)_0%,transparent_70%)] animate-pulse"></div>
@@ -36,13 +49,13 @@ export default function LoadingScreen() {
                         <div className="relative w-64 md:w-80 h-[1px] bg-white/5 mb-12 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
                             <motion.div
                                 className="absolute h-full bg-gradient-to-r from-transparent via-neon-blue to-transparent shadow-[0_0_15px_#00f3ff]"
-                                style={{ width: `${progress}%` }}
+                                style={{ width: `${displayProgress}%` }}
                             />
                             {/* Scanning line effect */}
                             <motion.div
                                 className="absolute h-full w-20 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                                 animate={{ left: ["-20%", "120%"] }}
-                                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                                transition={{ duration: 1.0, repeat: Infinity, ease: "linear" }}
                             />
                         </div>
 
@@ -60,14 +73,12 @@ export default function LoadingScreen() {
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                 >
-                                    {progress}
+                                    {displayProgress}
                                 </motion.span>
                                 <span className="absolute -right-8 top-2 text-xl font-bold text-neon-blue/40">%</span>
                             </div>
                         </div>
                     </div>
-
-
                 </motion.div>
             )}
         </AnimatePresence>

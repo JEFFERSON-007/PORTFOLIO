@@ -16,18 +16,15 @@ export default function Hero3D() {
     const [positions, setPositions] = useState<Float32Array>(new Float32Array(0));
 
     useEffect(() => {
-        if (window.innerWidth < 768) {
-            setIsMobile(true);
-            setParticleCount(300);
-            setSegments(16);
-        } else {
-            setIsMobile(false);
-            setParticleCount(1000);
-            setSegments(64);
-        }
+        const isMob = window.innerWidth < 768;
+        setIsMobile(isMob);
+        
+        const count = isMob ? 300 : 1000;
+        setParticleCount(count);
+        setSegments(isMob ? 64 : 128); // Smooth distortion for desktop, slightly less for mobile
 
-        const pos = new Float32Array(particleCount * 3);
-        for (let i = 0; i < particleCount; i++) {
+        const pos = new Float32Array(count * 3);
+        for (let i = 0; i < count; i++) {
             pos[i * 3] = (Math.random() - 0.5) * 20;
             pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
             pos[i * 3 + 2] = (Math.random() - 0.5) * 10;

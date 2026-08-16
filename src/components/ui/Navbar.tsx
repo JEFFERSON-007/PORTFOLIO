@@ -31,20 +31,35 @@ export default function Navbar() {
             const homeSection = document.getElementById("home");
             if (!homeSection) return;
 
+            const isDesktop = window.innerWidth >= 1024;
             const scrollY = window.scrollY;
-            const horizontalScrollStart = homeSection.offsetHeight;
-            const scrollDistance = window.innerWidth * 4; // Matches the horizontal scroll distance
-            const horizontalScrollEnd = horizontalScrollStart + scrollDistance;
 
-            if (scrollY < horizontalScrollStart - 100) {
-                setActiveSection("home");
-            } else if (scrollY > horizontalScrollEnd - 100) {
-                setActiveSection("connect");
+            if (isDesktop) {
+                const horizontalScrollStart = homeSection.offsetHeight;
+                const scrollDistance = window.innerWidth * 4; // Matches the horizontal scroll distance
+                const horizontalScrollEnd = horizontalScrollStart + scrollDistance;
+
+                if (scrollY < horizontalScrollStart - 100) {
+                    setActiveSection("home");
+                } else if (scrollY > horizontalScrollEnd - 100) {
+                    setActiveSection("connect");
+                } else {
+                    const progress = (scrollY - horizontalScrollStart) / (scrollDistance || 1);
+                    const panelIds = ["about", "skills", "projects", "timeline", "connect"];
+                    const panelIndex = Math.floor(progress * panelIds.length);
+                    setActiveSection(panelIds[Math.min(panelIndex, panelIds.length - 1)]);
+                }
             } else {
-                const progress = (scrollY - horizontalScrollStart) / (scrollDistance || 1);
-                const panelIds = ["about", "skills", "projects", "timeline", "connect"];
-                const panelIndex = Math.floor(progress * panelIds.length);
-                setActiveSection(panelIds[Math.min(panelIndex, panelIds.length - 1)]);
+                // Vertical scrolling for mobile
+                const sections = ["home", "about", "skills", "projects", "timeline", "connect"];
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const el = document.getElementById(sections[i]);
+                    // Offset to trigger earlier when scrolling down
+                    if (el && scrollY >= el.offsetTop - 200) {
+                        setActiveSection(sections[i]);
+                        break;
+                    }
+                }
             }
         };
 
@@ -60,6 +75,7 @@ export default function Navbar() {
     const scrollToSection = (id: string) => {
         setIsMobileMenuOpen(false);
         const homeSection = document.getElementById("home");
+        const isDesktop = window.innerWidth >= 1024;
 
         if (id === "home") {
             gsap.to(window, { duration: 0.8, scrollTo: 0, ease: "power2.inOut" });
@@ -68,27 +84,43 @@ export default function Navbar() {
 
         if (!homeSection) return;
 
-        const panelIds = ["about", "skills", "projects", "timeline", "connect"];
-        const panelIndex = panelIds.indexOf(id);
+        if (isDesktop) {
+            const panelIds = ["about", "skills", "projects", "timeline", "connect"];
+            const panelIndex = panelIds.indexOf(id);
 
-        if (panelIndex !== -1) {
-            const horizontalScrollStart = homeSection.offsetHeight;
-            const scrollDistance = window.innerWidth * 4;
-            // Target slightly past the snap point to ensure the section is definitely active
-            const scrollTarget = horizontalScrollStart + (panelIndex * (scrollDistance / (panelIds.length - 1))) + 2;
+            if (panelIndex !== -1) {
+                const horizontalScrollStart = homeSection.offsetHeight;
+                const scrollDistance = window.innerWidth * 4;
+                // Target slightly past the snap point to ensure the section is definitely active
+                const scrollTarget = horizontalScrollStart + (panelIndex * (scrollDistance / (panelIds.length - 1))) + 2;
 
-            gsap.to(window, {
-                duration: 1,
-                scrollTo: scrollTarget,
-                ease: "power3.inOut",
-                onComplete: () => {
-                    setActiveSection(id);
-                    // Force a layout refresh for GSAP
-                    if (typeof window !== "undefined") {
-                        window.dispatchEvent(new Event('resize'));
+                gsap.to(window, {
+                    duration: 1,
+                    scrollTo: scrollTarget,
+                    ease: "power3.inOut",
+                    onComplete: () => {
+                        setActiveSection(id);
+                        // Force a layout refresh for GSAP
+                        if (typeof window !== "undefined") {
+                            window.dispatchEvent(new Event('resize'));
+                        }
                     }
-                }
-            });
+                });
+            }
+        } else {
+            // Mobile (vertical scroll) jump
+            const targetEl = document.getElementById(id);
+            if (targetEl) {
+                gsap.to(window, {
+                    duration: 1,
+                    // Account for slightly different offsets or fixed headers if any
+                    scrollTo: { y: targetEl.offsetTop, autoKill: false },
+                    ease: "power3.inOut",
+                    onComplete: () => {
+                        setActiveSection(id);
+                    }
+                });
+            }
         }
     };
 

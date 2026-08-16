@@ -7,12 +7,15 @@ export default function CustomCursor() {
     const cursorRef = useRef<HTMLDivElement>(null);
     const [isHovering, setIsHovering] = useState(false);
     const [isTouch, setIsTouch] = useState(false);
+    
+    // Target element to track for magnetic effect
+    const [hoverTarget, setHoverTarget] = useState<HTMLElement | null>(null);
 
     // Use motion values for smoother, higher performance animations
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
 
-    const springConfig = { damping: 25, stiffness: 250, mass: 0.5 };
+    const springConfig = { damping: 25, stiffness: 450, mass: 0.1 };
     const springX = useSpring(cursorX, springConfig);
     const springY = useSpring(cursorY, springConfig);
 
@@ -23,21 +26,35 @@ export default function CustomCursor() {
         }
 
         const handleMouseMove = (e: MouseEvent) => {
-            cursorX.set(e.clientX - 16);
-            cursorY.set(e.clientY - 16);
+            let targetX = e.clientX - 16;
+            let targetY = e.clientY - 16;
+
+            if (hoverTarget) {
+                // Magnetic effect: subtly pull the cursor towards the center of the hovered element
+                const rect = hoverTarget.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                // Pull cursor 30% towards the center of the element
+                targetX = targetX + (centerX - e.clientX) * 0.3;
+                targetY = targetY + (centerY - e.clientY) * 0.3;
+            }
+
+            cursorX.set(targetX);
+            cursorY.set(targetY);
         };
 
         const handleMouseOver = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (
-                target.tagName === "BUTTON" ||
-                target.tagName === "A" ||
-                target.closest(".glass") ||
-                target.closest("input, textarea")
-            ) {
+            // Identify elements we want to make "magnetic"
+            const interactive = target.closest("button, a, .glass, input, textarea") as HTMLElement;
+            
+            if (interactive) {
                 setIsHovering(true);
+                setHoverTarget(interactive);
             } else {
                 setIsHovering(false);
+                setHoverTarget(null);
             }
         };
 
@@ -48,7 +65,7 @@ export default function CustomCursor() {
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseover", handleMouseOver);
         };
-    }, [cursorX, cursorY]);
+    }, [cursorX, cursorY, hoverTarget]);
 
     if (isTouch) return null;
 
@@ -63,7 +80,7 @@ export default function CustomCursor() {
                 backgroundColor: isHovering ? "rgba(0, 243, 255, 0.4)" : "#fff",
             }}
         >
-            <div className="absolute inset-0 rounded-full border border-white opacity-20 scale-150"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white opacity-20"></div>
         </motion.div>
     );
 }
