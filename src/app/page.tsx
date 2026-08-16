@@ -129,7 +129,7 @@ export default function Home() {
         });
 
         mm.add("(max-width: 1023px)", () => {
-            // Mobile: Standard vertical scroll entrance animations
+            // Mobile: Standard vertical scroll - simplified to avoid GSAP opacity bugs and lag
             const sections = gsap.utils.toArray(".panel");
             
             sections.forEach((section: any) => {
@@ -137,43 +137,8 @@ export default function Home() {
                 const content = section.querySelector(".panel-content");
                 const cards = section.querySelectorAll(".group");
 
-                if (title) {
-                    gsap.from(title, {
-                        y: 30,
-                        opacity: 0,
-                        scrollTrigger: {
-                            trigger: section as Element,
-                            start: "top 80%",
-                            toggleActions: "play none none reverse",
-                        }
-                    });
-                }
-                if (content && section.id !== 'connect') {
-                    gsap.from(content, {
-                        y: 50,
-                        opacity: 0,
-                        delay: 0.2,
-                        scrollTrigger: {
-                            trigger: section as Element,
-                            start: "top 70%",
-                            toggleActions: "play none none reverse",
-                        }
-                    });
-                } else if (content && section.id === 'connect') {
-                    gsap.set(content, { opacity: 1, y: 0 });
-                }
-                if (cards && cards.length > 0) {
-                    gsap.from(cards, {
-                        y: 40,
-                        opacity: 0,
-                        stagger: 0.1,
-                        scrollTrigger: {
-                            trigger: section as Element,
-                            start: "top 75%",
-                            toggleActions: "play none none reverse",
-                        }
-                    });
-                }
+                // Clear any leftover inline styles from desktop to ensure visibility
+                gsap.set([title, content, cards], { clearProps: "all" });
             });
         });
 
@@ -198,15 +163,14 @@ export default function Home() {
             <LoadingScreen />
             <CustomCursor />
 
-            {/* 3D Background */}
+            {/* Background */}
             <div className="fixed inset-0 z-0">
-                <Scene />
+                {!isMobile ? <Scene /> : <ParticleBackground />}
             </div>
 
             <div className="relative z-10">
                 {/* HERO SECTION */}
                 <section id="home" className="relative h-screen w-full flex flex-col items-center justify-center p-6 text-center">
-                    {!isMobile && <ParticleBackground />}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -278,7 +242,7 @@ export default function Home() {
                                     <div className="absolute inset-0 bg-neon-blue/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     <div className="bg-white/5 rounded-[22px] h-full flex items-center justify-center border border-white/10 relative overflow-hidden">
                                         <Image
-                                            src="/profile.jpg"
+                                            src="/PORTFOLIO/profile.jpg"
                                             alt="Jefferson Raja"
                                             width={400}
                                             height={500}
@@ -306,25 +270,25 @@ export default function Home() {
                                         title="Cybersecurity"
                                         icon={<Cpu />}
                                         tags={["Linux", "Python", "Wireshark", "Metasploit", "Gnubash"]}
-                                        image="/skill-sec.png"
+                                        image="/PORTFOLIO/skill-sec.png"
                                     />
                                     <SkillCard
                                         title="Web Dev"
                                         icon={<Globe />}
                                         tags={["React", "Nextdotjs", "Javascript", "Html5", "Tailwindcss"]}
-                                        image="/skill-web.png"
+                                        image="/PORTFOLIO/skill-web.png"
                                     />
                                     <SkillCard
                                         title="Engineering"
                                         icon={<Code2 />}
                                         tags={["Cplusplus", "C", "Java", "Python", "Android"]}
-                                        image="/skill-eng.png"
+                                        image="/PORTFOLIO/skill-eng.png"
                                     />
                                     <SkillCard
                                         title="Data & AI"
                                         icon={<Cpu />}
                                         tags={["Python", "Pandas", "Scikitlearn", "Numpy"]}
-                                        image="/skill-data.png"
+                                        image="/PORTFOLIO/skill-data.png"
                                     />
                                 </div>
                             </div>
@@ -339,21 +303,21 @@ export default function Home() {
                                         title="Dataset Visualizer"
                                         description="Advanced tool for data visualization and preprocessing with interactive 3D graphs."
                                         tags={["Python", "ML", "Tooling"]}
-                                        image="/project-1.png"
+                                        image="/PORTFOLIO/project-1.png"
                                         githubUrl="https://github.com/JEFFERSON-007/dataset-visualition-and-preprocessing-tool"
                                     />
                                     <ProjectCard
                                         title="Phishing Shield"
                                         description="Professional browser extension with multi-layered detection for secure browsing."
                                         tags={["Security", "Extension", "JS"]}
-                                        image="/project-2.png"
+                                        image="/PORTFOLIO/project-2.png"
                                         githubUrl="https://github.com/JEFFERSON-007/phishing-extension"
                                     />
                                     <ProjectCard
                                         title="Pentest Toolkit"
                                         description="Comprehensive penetration testing suite for infrastructure vulnerability assessment."
                                         tags={["Cybersec", "Python", "NetSec"]}
-                                        image="/project-3.png"
+                                        image="/PORTFOLIO/project-3.png"
                                         githubUrl="https://github.com/JEFFERSON-007/PENETRATION-TESTING-TOOLKIT"
                                     />
                                 </div>
